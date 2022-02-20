@@ -1,2 +1,6 @@
 spring:
   output.ansi.enabled: always  # terminal color
+  jpa:
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true

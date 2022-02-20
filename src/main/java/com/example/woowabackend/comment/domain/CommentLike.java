@@ -1,12 +1,13 @@
 package com.example.woowabackend.comment.domain;
 
+import com.example.woowabackend.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import static javax.persistence.FetchType.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,5 +16,13 @@ public class CommentLike {
 
     @Id @GeneratedValue
     private Long id;
-    // memberId, commentId pk로 설정해야함... 화이팅
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
 }

@@ -1,12 +1,16 @@
 package com.example.woowabackend.Post.domain;
 
+import com.example.woowabackend.comment.domain.Comment;
+import com.example.woowabackend.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.persistence.FetchType.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,11 +26,25 @@ public class Post {
     private String auth;
     private String img;
     private Long likeCnt;
-    private Long memberId;  // mapping 필요
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "board_id")
+    private Board board;
+
     private String tagList; // string 줄줄이로
-    private Long boardId;
     private Long viewCnt;
     private Long commentCnt;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<PostLike> postLikes = new ArrayList<>();
+
 
 
 }
