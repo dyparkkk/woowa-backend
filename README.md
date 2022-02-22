@@ -7,4 +7,4 @@
 
 ## ERD
 
-<img src="[이미지주소.png](https://user-images.githubusercontent.com/30069784/155072950-e8b46ca6-3748-4def-a0b9-ed807463caa3.png)" width="800" height="600"/>
+<img src="https://user-images.githubusercontent.com/30069784/155072950-e8b46ca6-3748-4def-a0b9-ed807463caa3.png" width="200" height="400"/>
