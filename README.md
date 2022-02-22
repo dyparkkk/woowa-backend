@@ -2,9 +2,8 @@
 
 22.01 - now
 
-## Figma
+![정보구성도](https://user-images.githubusercontent.com/30069784/155072782-84d994fa-6c62-4a58-b1cc-5db1770807a7.png)
 
-[https://www.figma.com/embed?embed_host=notion&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FnJAbnKCAdcTV2tcGxTRpua%2F%25EC%259A%25B0%25EC%2595%2584%25ED%2595%2599%25E3%2585%2594%3Fnode-id%3D0%253A1](https://www.figma.com/embed?embed_host=notion&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FnJAbnKCAdcTV2tcGxTRpua%2F%25EC%259A%25B0%25EC%2595%2584%25ED%2595%2599%25E3%2585%2594%3Fnode-id%3D0%253A1)
 
 ## ERD
 
