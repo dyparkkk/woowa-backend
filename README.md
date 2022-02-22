@@ -7,4 +7,4 @@
 
 ## ERD
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d462c919-9a68-489c-ae6b-62251cf3549d/Untitled.png)
+<img src="[이미지주소.png](https://user-images.githubusercontent.com/30069784/155072950-e8b46ca6-3748-4def-a0b9-ed807463caa3.png)" width="200" height="400"/>
