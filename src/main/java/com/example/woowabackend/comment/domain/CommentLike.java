@@ -25,4 +25,5 @@ public class CommentLike {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    // 연관관계 편의 메서드 ...
 }

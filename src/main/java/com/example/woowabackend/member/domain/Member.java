@@ -5,11 +5,13 @@ import com.example.woowabackend.Post.domain.Scrap;
 import com.example.woowabackend.comment.domain.CommentLike;
 import com.example.woowabackend.school.domain.School;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static javax.persistence.FetchType.*;
@@ -29,6 +31,8 @@ public class Member {
     private String phoneNumber;
     private String birth;
 
+    private String roles;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "school_id")
     private School schoolCode;
@@ -46,4 +50,26 @@ public class Member {
     private List<CommentLike> commentLike = new ArrayList<>(); // 중복을 방지하기 위해서 Set 사용 고려
 
     // comment 양방향 필요 ?
+
+    public List<String> getRoleList() {
+        if(roles.length() > 0) {
+            return Arrays.asList(roles.split(","));
+        }
+        return new ArrayList<>();
+    }
+
+    @Builder
+    public Member(String userId, String pw) {
+        this.userId = userId;
+        this.pw = pw;
+        this.roles = "ROLE_USER";
+    }
+
+    public static Member testCreate(String userId, String pw) {
+        return Member.builder()
+                .userId(userId)
+                .pw(pw)
+                .build();
+    }
+
 }

@@ -32,8 +32,8 @@ public class Comment {
     private Integer order;
     private Integer groupNum;
     private Long likeCnt;
-//
-//    @OneToMany(mappedBy = "comment")
-//    private List<CommentLike> commentLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "comment")
+    private List<CommentLike> commentLikes = new ArrayList<>();
 
 }

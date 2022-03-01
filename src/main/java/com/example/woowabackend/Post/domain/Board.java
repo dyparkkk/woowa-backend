@@ -23,4 +23,5 @@ public class Board {
     private School school; // 개선 고려 -> type에 따라 꼭있어야 하거나 없어도 되거나
 
     private Integer type; // 학교게시판인지, 지역게시판인지
+
 }
