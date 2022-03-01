@@ -5,6 +5,7 @@ import com.example.woowabackend.Post.domain.Scrap;
 import com.example.woowabackend.comment.domain.CommentLike;
 import com.example.woowabackend.school.domain.School;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -46,4 +47,13 @@ public class Member {
     private List<CommentLike> commentLike = new ArrayList<>(); // 중복을 방지하기 위해서 Set 사용 고려
 
     // comment 양방향 필요 ?
+
+    @Builder
+    public Member(String userId, String pw, String name, String phoneNumber,String birth) {
+        this.userId = userId;
+        this.pw = pw;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.birth = birth;
+    }
 }

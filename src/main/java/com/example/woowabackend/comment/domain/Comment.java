@@ -29,11 +29,11 @@ public class Comment {
 
     private String content;
     private Integer arg; // 댓글인지 대댓글인지
-    private Integer order;
+    private Integer orders;
     private Integer groupNum;
-    private Long likeCnt;
-//
-//    @OneToMany(mappedBy = "comment")
-//    private List<CommentLike> commentLikes = new ArrayList<>();
+    private Long likesCnt;
+
+    @OneToMany(mappedBy = "comment")
+    private List<CommentLike> commentLikes = new ArrayList<>();
 
 }
