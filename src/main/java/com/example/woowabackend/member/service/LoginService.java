@@ -1,9 +1,12 @@
 package com.example.woowabackend.member.service;
 
+import com.example.woowabackend.member.controller.SignInResponseDto;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import com.example.woowabackend.security.MyUserDetailsService;
 import com.example.woowabackend.security.jwt.JwtTokenProvider;
+import com.example.woowabackend.security.jwt.RefreshToken;
+import com.example.woowabackend.security.jwt.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,9 +27,10 @@ public class LoginService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final MyUserDetailsService myUserDetailsService;
+    private final RefreshTokenRepository repository; // 삭제
 
     @Transactional
-    public Long signUp(String userId, String pw){
+    public Long signUp(String userId, String pw){ // 회원가입
         // 중복체크
         validateDuplicateUser(userId);
         String encodePw = passwordEncoder.encode(pw);
@@ -34,9 +38,8 @@ public class LoginService {
         return memberRepository.save(Member.testCreate(userId, encodePw)).getId();
     }
 
-    @Transactional(readOnly = true)
-    public String signIn(String userId, String pw) {
-        boolean rememberMe = false; // 이게 뭐임 ?
+    @Transactional()
+    public SignInResponseDto signIn(String userId, String pw) {
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(userId);
 
         if(!passwordEncoder.matches(pw, userDetails.getPassword())){
@@ -45,10 +48,14 @@ public class LoginService {
 
         Authentication authentication =  new UsernamePasswordAuthenticationToken(
                 userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
-        return jwtTokenProvider.createAccessToken(authentication, rememberMe);
 
+        log.info("signIn service | authentication.getName : {}, authentication.getCredentials() : {}",
+                authentication.getName(), authentication.getCredentials());
+
+        return new SignInResponseDto(
+                "Bearer-"+jwtTokenProvider.createAccessToken(authentication),
+                "Bearer-"+jwtTokenProvider.issueRefreshToken(authentication));
     }
-
 
     private void validateDuplicateUser(String userId){
         memberRepository.findByUserId(userId)

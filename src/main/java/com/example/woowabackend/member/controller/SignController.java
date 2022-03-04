@@ -23,10 +23,8 @@ public class SignController {
 
 
     @PostMapping("/api/v1/signIn")
-    public String signInp(@RequestParam String id,
+    public SignInResponseDto signInp(@RequestParam String id,
                        @RequestParam String pw) {
-
-        String jwtToken = loginService.signIn(id, pw);
-        return "Bearer-"+jwtToken;
+        return loginService.signIn(id, pw);
     }
 }

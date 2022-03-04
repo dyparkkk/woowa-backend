@@ -5,27 +5,24 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Key;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 public class JwtTokenProvider implements InitializingBean {
 
-    private static final String AUTHORITIES_KEY = "auth";
-
-    @Autowired
-    private MyUserDetailsService myUserDetailsService;
+    private final MyUserDetailsService myUserDetailsService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     private final String secretKey;
     private final long tokenValidityInMs;
@@ -33,10 +30,14 @@ public class JwtTokenProvider implements InitializingBean {
 
     public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey,
                             @Value("${jwt.token-validity-in-sec}") long tokenValidity,
-                            @Value("${jwt.refresh-token-validity-in-sec}") long  refreshTokenValidity){
+                            @Value("${jwt.refresh-token-validity-in-sec}") long refreshTokenValidity,
+                            MyUserDetailsService myUserDetailsService,
+                            RefreshTokenRepository refreshTokenRepository){
         this.secretKey = secretKey;
         this.tokenValidityInMs = tokenValidity * 1000;
         this.refreshTokenValidityInMs = refreshTokenValidity * 1000;
+        this.myUserDetailsService = myUserDetailsService;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     private Key key;
@@ -48,40 +49,21 @@ public class JwtTokenProvider implements InitializingBean {
         // https://budnamu.tistory.com/entry/JWT 참고
     }
 
-    public String createAccessToken(Authentication authentication, Boolean rememberMe) {
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority) // grantedAuthority -> grantedAuthority.getAuthority()
-                .collect(Collectors.joining()); // joining ??
-
+    public String createAccessToken(Authentication authentication) {
+//        String authorities = authentication.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority) // grantedAuthority -> grantedAuthority.getAuthority()
+//                .collect(Collectors.joining()); // joining ??
         Date now = new Date();
         Date validity = new Date(now.getTime() + tokenValidityInMs);
 
         return Jwts.builder()
                 .setSubject(authentication.getName()) //
                 .setIssuedAt(now) // 발행시간
-                .claim(AUTHORITIES_KEY, authorities) // 권한
+//                .claim(AUTHORITIES_KEY, authorities) // 권한
                 .signWith(key, SignatureAlgorithm.HS512) // 암호화
                 .setExpiration(validity) // 만료
                 .compact();
     }
-
-    public String createRefreshToken(Authentication authentication){
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority) // grantedAuthority -> grantedAuthority.getAuthority()
-                .collect(Collectors.joining()); // joining ??
-
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + refreshTokenValidityInMs);
-
-        return Jwts.builder()
-                .setSubject(authentication.getName())
-                .setIssuedAt(now)
-                .claim(AUTHORITIES_KEY, authorities)
-                .signWith(key, SignatureAlgorithm.HS512)
-                .setExpiration(validity)
-                .compact();
-    }
-
 
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parserBuilder()
@@ -90,24 +72,77 @@ public class JwtTokenProvider implements InitializingBean {
                 .parseClaimsJws(token)
                 .getBody();
 
-//        Collection<? extends GrantedAuthority> authorities =
-//                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-//                        .map(SimpleGrantedAuthority::new)
-//                        .collect(Collectors.toList());
-
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
     }
 
-    public boolean validateToken(String token) {
+    public JwtCode validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
+            return JwtCode.ACCESS;
         } catch (ExpiredJwtException e){
-            return true;
+            // refresh token 확인 작업
+            return JwtCode.EXPIRED;
         } catch (JwtException | IllegalArgumentException e) {
             log.info("jwtException : {}", e);
         }
-        return false;
+        return JwtCode.DENIED;
+    }
+
+    @Transactional
+    public String reissueRefreshToken(String refreshToken) throws RuntimeException{
+        // refresh token을 디비의 그것과 비교해보기
+        Authentication authentication = getAuthentication(refreshToken);
+        RefreshToken findRefreshToken = refreshTokenRepository.findByUserId(authentication.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("userId : " + authentication.getName() + " was not found"));
+
+        if(findRefreshToken.getToken().equals(refreshToken)){
+            // 새로운거 생성
+            String newRefreshToken = createRefreshToken(authentication);
+            findRefreshToken.changeToken(newRefreshToken);
+            return newRefreshToken;
+        }
+        else {
+            log.info("refresh 토큰이 일치하지 않습니다. ");
+            return null;
+        }
+    }
+
+    @Transactional
+    public String issueRefreshToken(Authentication authentication){
+        String newRefreshToken = createRefreshToken(authentication);
+//        RefreshToken token = RefreshToken.createToken(authentication.getName(), newRefreshToken);
+//        refreshTokenRepository.save(token);
+        // 기존것이 있다면 바꿔주고, 없다면 만들어줌
+        refreshTokenRepository.findByUserId(authentication.getName())
+                .ifPresentOrElse(
+                        r-> {r.changeToken(newRefreshToken);
+                            log.info("issueRefreshToken method | change token ");
+                            },
+                        () -> {
+                            RefreshToken token = RefreshToken.createToken(authentication.getName(), newRefreshToken);
+                            log.info(" issueRefreshToken method | save tokenID : {}, token : {}", token.getUserId(), token.getToken());
+                            refreshTokenRepository.save(token);
+                        });
+
+        return newRefreshToken;
+    }
+
+    private String createRefreshToken(Authentication authentication){
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + refreshTokenValidityInMs);
+
+        return Jwts.builder()
+                .setSubject(authentication.getName())
+                .setIssuedAt(now)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(validity)
+                .compact();
+    }
+
+    public static enum JwtCode{
+        DENIED,
+        ACCESS,
+        EXPIRED;
     }
 }

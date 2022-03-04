@@ -12,6 +12,6 @@ public class TestController {
     @GetMapping("/auth/test")
     public String test() { // @AuthenticationPrincipal
         log.info("-------/auth/test");
-        return "hi";
+        return "hi";    
     }
 }
