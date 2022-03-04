@@ -18,22 +18,22 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/post/save")
-    public String postSave(){
-        return "post-save";
-    }
+        public String postSave(){
+            return "post-save";
+        }
 
-    @GetMapping("/post/update/{id}")
-    public String postUpdate(@PathVariable Long id, Model model){
-        PostResponseDto dto = postService.findById(id);
-        System.out.println(id + "id");
-        model.addAttribute("post",dto);
-        return "post-update";
-    }
+        @GetMapping("/post/update/{id}")
+        public String postUpdate(@PathVariable Long id, Model model){
+            PostResponseDto dto = postService.findById(id);
+            System.out.println(id + "id");
+            model.addAttribute("post",dto);
+            return "post-update";
+        }
 
-    @GetMapping("/post/detail/{id}")
-    public String read(@PathVariable Long id, Model model) {
-        PostResponseDto dto = postService.findById(id);
-        postService.updateView(id); // views ++
+        @GetMapping("/post/detail/{id}")
+        public String read(@PathVariable Long id, Model model) {
+            PostResponseDto dto = postService.findById(id);
+            postService.updateView(id); // views ++
         model.addAttribute("post", dto);
         return "post-detail";
     }

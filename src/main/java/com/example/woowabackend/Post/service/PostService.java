@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -64,8 +65,11 @@ public class PostService {
 
     //조회수
     @Transactional
-    public int updateView(Long id) {
-        return postRepository.updateView(id);
+    public void updateView(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("안됨"));
+
+        post.increaseViewCnt();
     }
 
 

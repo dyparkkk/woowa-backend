@@ -10,7 +10,10 @@ import java.util.Optional;
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
 
     Optional<Long> countByPost(Post post);
-    Optional<PostLike> findByMemberAndPost(Member member, Post post);
 
+    // 한번 돌려봐... 나도 잘 모르겟어 ㅎㅎ;
+    Optional<PostLike> findByMemberIdAndPostId(Long memberId, Long postId);
 
+    // 규칙 ...
+    Optional<PostLike> findByPostId(Long postId);
 }

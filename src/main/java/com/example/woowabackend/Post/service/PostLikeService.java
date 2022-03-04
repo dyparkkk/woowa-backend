@@ -5,6 +5,7 @@ import com.example.woowabackend.Post.domain.PostLike;
 import com.example.woowabackend.Post.repository.PostLikeRepository;
 import com.example.woowabackend.Post.repository.PostRepository;
 import com.example.woowabackend.member.domain.Member;
+import com.example.woowabackend.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,16 @@ public class PostLikeService {
 
     private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
+    private final MemberRepository memberRepository;
 
     //좋아요
-    public boolean addLike(Member member, Long postId){
+    public boolean addLike(Long postId, Long memberId){
         Post post = postRepository.findById(postId).orElseThrow();
+        Member member = memberRepository.findById(memeberId).orElseThrow();
+        // 확인 때문에 ... 실은 안찾아도 됨.. ->
 
         //중복방지
-        if(isNotAlreadyLike(member,post)){
+        if(isNotAlreadyLike(memeberId,postId)){
             postLikeRepository.save(new PostLike(post,member));
             return true;
         }
@@ -45,7 +49,6 @@ public class PostLikeService {
      */
     public List<String> count(Long id, Member userId) {
         Post post = postRepository.findById(id).orElseThrow();
-
         Long likeCnt = postLikeRepository.countByPost(post).orElse(Long.valueOf("0"));
 
         List<String> resultData =
@@ -60,8 +63,8 @@ public class PostLikeService {
     }
 
     //이미 좋아요 한 게시물인지 체크
-    private boolean isNotAlreadyLike(Member member, Post post){
-        return postLikeRepository.findByMemberAndPost(member,post).isEmpty();
+    private boolean isNotAlreadyLike(Long memberId, Post post){
+        return postLikeRepository.findByMemberAndPost(memberId,post).isEmpty();
     }
 
 }
