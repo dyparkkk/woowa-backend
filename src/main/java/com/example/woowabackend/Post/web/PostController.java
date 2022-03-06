@@ -31,11 +31,11 @@ public class PostController {
     }
 
     @GetMapping("/post/detail/{id}")
-    public String read(@PathVariable Long id, Model model) {
+    public String postDetail(@PathVariable("id") Long id, Model model) {
         PostResponseDto dto = postService.findById(id);
         postService.updateView(id); // views ++
         model.addAttribute("post", dto);
-        return "post-detail";
+        return "post/detail";
     }
 
 }

@@ -3,7 +3,6 @@ package com.example.woowabackend.Post.web.dto;
 import com.example.woowabackend.Post.domain.Post;
 import lombok.Getter;
 
-import java.util.List;
 
 @Getter
 public class PostResponseDto {
@@ -12,7 +11,8 @@ public class PostResponseDto {
     private String title;
     private String content;
     private String auth;
-    private int viewCut;
+    private Long viewCut;
+    private Long likeCnt;
 
 
     public PostResponseDto(Post entity){
@@ -21,6 +21,7 @@ public class PostResponseDto {
         this.content = entity.getContent();
         this.auth = entity.getAuth();
         this.viewCut = entity.getViewCnt();
+        this.likeCnt  = entity.getLikeCnt();
 
     }
 }

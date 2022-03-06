@@ -1,16 +1,11 @@
 package com.example.woowabackend.Post.web.dto;
 
 import com.example.woowabackend.Post.domain.Post;
-import com.example.woowabackend.Post.domain.Tag;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 @Getter
 @NoArgsConstructor
@@ -26,7 +21,6 @@ public class PostSaveRequestDto {
         this.title = title;
         this.content = content;
         this.auth = auth;
-
     }
 
 

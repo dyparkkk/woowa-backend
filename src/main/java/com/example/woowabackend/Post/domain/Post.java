@@ -3,7 +3,6 @@ package com.example.woowabackend.Post.domain;
 import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.util.domain.BaseTimeEntity;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,7 +28,6 @@ public class Post extends BaseTimeEntity {
     private String content;
     private String auth;
     private String img;
-    private Long likeCnt;
     private String deleteYn;
 
     @ManyToOne(fetch = LAZY)
@@ -42,8 +40,11 @@ public class Post extends BaseTimeEntity {
 
     private String tagList; // string 줄줄이로
 
-    @Column(nullable = false)
-    private int viewCnt;
+    @Column
+    private Long viewCnt;
+
+    @Column
+    private Long likeCnt;
 
     private Long commentCnt;
 
@@ -54,12 +55,13 @@ public class Post extends BaseTimeEntity {
     private List<PostLike> postLikes = new ArrayList<>();
 
     @Builder
-    public Post(String title, String content, String auth, String img, Long likeCnt, String tagList, int viewCnt, Long commentCnt,String deleteYn){
+    public Post(String title, String content, String auth, String img, Long likeCnt, String tagList, Long viewCnt, Long commentCnt,String deleteYn){
         this.title = title;
         this.content = content;
         this.auth = auth;
         imgUpload(img);
         this.viewCnt = viewCnt;
+        this.likeCnt = likeCnt;
         this.deleteYn = deleteYn;
 
     }
@@ -76,6 +78,13 @@ public class Post extends BaseTimeEntity {
 
     public void increaseViewCnt(){
         this.viewCnt++;
+    }
+
+   public void increaseLikeCnt(){
+        this.likeCnt++;
+   }
+    public void deleteLikeCnt(){
+        this.likeCnt--;
     }
 
     public void delete(){

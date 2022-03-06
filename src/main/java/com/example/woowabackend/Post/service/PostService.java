@@ -46,13 +46,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    public List<PostResponseDto> findAllByDeleteYn(String deleteYn){
-        List<Post>list = postRepository.findAllByDeleteYn(deleteYn);
-        return list.stream()
-                .map(PostResponseDto::new)
-                .collect(Collectors.toList());
-    }
+
 
     @Transactional
     public Long delete(Long id) {
@@ -63,9 +57,11 @@ public class PostService {
     }
 
     //조회수
-    @Transactional
-    public int updateView(Long id) {
-        return postRepository.updateView(id);
+    public void updateView(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new
+                IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+        post.increaseViewCnt();
+        postRepository.save(post);
     }
 
 

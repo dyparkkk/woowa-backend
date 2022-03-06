@@ -5,13 +5,9 @@ import com.example.woowabackend.Post.domain.PostLike;
 import com.example.woowabackend.Post.repository.PostLikeRepository;
 import com.example.woowabackend.Post.repository.PostRepository;
 import com.example.woowabackend.member.domain.Member;
+import com.example.woowabackend.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -19,49 +15,47 @@ public class PostLikeService {
 
     private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
+    private final MemberRepository memberRepository;
 
     //좋아요
-    public boolean addLike(Member member, Long postId){
+    public boolean addLike(Long memberId, Long postId){
         Post post = postRepository.findById(postId).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow();
 
         //중복방지
-        if(isNotAlreadyLike(member,post)){
+        if(isNotAlreadyLike(memberId,postId)){
             postLikeRepository.save(new PostLike(post,member));
             return true;
         }
         return false;
     }
 
-    public void cancelLike(Member member, Long id) {
-        Post post = postRepository.findById(id).orElseThrow();
-        PostLike postlike = postLikeRepository.findByMemberAndPost(member, post).orElseThrow();
-        postLikeRepository.delete(postlike);
+    public void cancelLike(Long memberId, Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        PostLike postlike = postLikeRepository.findByMemberIdAndPostId(memberId,postId).orElseThrow();
+       postLikeRepository.delete(postlike);
     }
 
-    /*
-        1 좋아요를 count할 대상 post를 가져온다.
-        2 가져온 post로 postlike테이블에 쿼리한 결과를 List에 담는다.
-        3 현재 로그인한 사용자가 이미 해당 게시물에 좋아요를 눌렀는지 검사하고 결과를 List에 담아 반환한다.
-     */
-    public List<String> count(Long id, Member userId) {
-        Post post = postRepository.findById(id).orElseThrow();
+    public void count(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new  IllegalArgumentException("실패"));
+        post.increaseLikeCnt();
+        postRepository.save(post);
 
-        Long likeCnt = postLikeRepository.countByPost(post).orElse(Long.valueOf("0"));
-
-        List<String> resultData =
-                new ArrayList<>(Arrays.asList(String.valueOf(likeCnt)));
-
-        if (Objects.nonNull(userId)) {
-            resultData.add(String.valueOf(isNotAlreadyLike(userId, post)));
-            return resultData;
-        }
-
-        return resultData;
     }
+    public void DeleteCount(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new  IllegalArgumentException("실패"));
+        post.deleteLikeCnt();
+        postRepository.save(post);
+
+    }
+
 
     //이미 좋아요 한 게시물인지 체크
-    private boolean isNotAlreadyLike(Member member, Post post){
-        return postLikeRepository.findByMemberAndPost(member,post).isEmpty();
+    private boolean isNotAlreadyLike(Long memberId, Long postId){
+        return postLikeRepository.findByMemberIdAndPostId(memberId,postId).isEmpty();
     }
 
 }
