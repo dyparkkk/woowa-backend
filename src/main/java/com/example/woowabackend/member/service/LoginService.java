@@ -1,12 +1,10 @@
 package com.example.woowabackend.member.service;
 
-import com.example.woowabackend.member.controller.SignInResponseDto;
+import com.example.woowabackend.member.controller.dto.SignInResponseDto;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import com.example.woowabackend.security.MyUserDetailsService;
 import com.example.woowabackend.security.jwt.JwtTokenProvider;
-import com.example.woowabackend.security.jwt.RefreshToken;
-import com.example.woowabackend.security.jwt.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,7 +25,6 @@ public class LoginService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final MyUserDetailsService myUserDetailsService;
-    private final RefreshTokenRepository repository; // 삭제
 
     @Transactional
     public Long signUp(String userId, String pw){ // 회원가입
@@ -49,12 +46,7 @@ public class LoginService {
         Authentication authentication =  new UsernamePasswordAuthenticationToken(
                 userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
 
-        log.info("signIn service | authentication.getName : {}, authentication.getCredentials() : {}",
-                authentication.getName(), authentication.getCredentials());
-
-        return new SignInResponseDto(
-                "Bearer-"+jwtTokenProvider.createAccessToken(authentication),
-                "Bearer-"+jwtTokenProvider.issueRefreshToken(authentication));
+        return new SignInResponseDto("Bearer-"+jwtTokenProvider.createAccessToken(authentication));
     }
 
     private void validateDuplicateUser(String userId){

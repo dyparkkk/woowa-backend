@@ -1,9 +1,8 @@
 package com.example.woowabackend.member.controller;
 
+import com.example.woowabackend.member.controller.dto.SignInResponseDto;
 import com.example.woowabackend.member.service.LoginService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +23,7 @@ public class SignController {
 
     @PostMapping("/api/v1/signIn")
     public SignInResponseDto signInp(@RequestParam String id,
-                       @RequestParam String pw) {
+                                     @RequestParam String pw) {
         return loginService.signIn(id, pw);
     }
 }

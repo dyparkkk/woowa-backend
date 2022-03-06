@@ -1,4 +1,4 @@
-package com.example.woowabackend.member.controller;
+package com.example.woowabackend.member.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SignInResponseDto {
     private String accessToken;
-    private String refreshToken;
 
 }
