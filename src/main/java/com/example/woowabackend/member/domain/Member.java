@@ -1,23 +1,22 @@
 package com.example.woowabackend.member.domain;
 
-import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.PostLike;
 import com.example.woowabackend.Post.domain.Scrap;
-import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.comment.domain.CommentLike;
 import com.example.woowabackend.school.domain.School;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.*;
 
 @Entity
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Member {
 
@@ -46,4 +45,15 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<CommentLike> commentLike = new ArrayList<>(); // 중복을 방지하기 위해서 Set 사용 고려
+
+    // comment 양방향 필요 ?
+
+    @Builder
+    public Member(String userId, String pw, String name, String phoneNumber,String birth) {
+        this.userId = userId;
+        this.pw = pw;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.birth = birth;
+    }
 }

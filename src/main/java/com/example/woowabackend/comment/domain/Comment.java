@@ -7,8 +7,6 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-
-import java.sql.Timestamp;
 import java.util.*;
 
 import static javax.persistence.FetchType.*;
