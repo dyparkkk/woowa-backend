@@ -14,12 +14,18 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        show_sql: false
-        format_sql: false
+        globally_quoted_identifiers: true
+        show_sql: true
+        format_sql: true
 
   output.ansi.enabled: always  # terminal color
 
-#logging:
-#  level:
-#    org.hibernate.SQL: debug
-#    org.hibernate.type: trace
+  redis:
+    host: localhost
+    port: 6379
+
+jwt:
+  secret-key: secret-key-lalala-lululu-fucking-error-WeakKeyException-not-secure-enough
+  token-validity-in-sec: 604800  # 일주일
+  refresh-token-validity-in-sec: 604800  # 일주일
+

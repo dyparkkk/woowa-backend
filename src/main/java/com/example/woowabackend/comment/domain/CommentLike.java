@@ -33,4 +33,5 @@ public CommentLike(Member member, Comment comment){
     this.comment = comment;
     }
 
+    // 연관관계 편의 메서드 ...
 }
