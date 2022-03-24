@@ -65,10 +65,12 @@ public class Member {
             return Arrays.asList(roles.split(","));
         }
         return new ArrayList<>();
+
     }
 
+
     @Builder
-    public Member(String userId, String pw) {
+    private Member(String userId, String pw) {
         this.userId = userId;
         this.pw = pw;
         this.roles = "ROLE_USER";

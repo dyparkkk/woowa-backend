@@ -1,13 +1,13 @@
 package com.example.woowabackend.member.service;
 
-import com.example.woowabackend.member.controller.dto.SignInResponseDto;
+import com.example.woowabackend.member.exception.DuplicateUserIdException;
+import com.example.woowabackend.member.exception.PwNotMatchException;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import com.example.woowabackend.security.MyUserDetailsService;
 import com.example.woowabackend.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,11 +15,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.example.woowabackend.member.controller.dto.MemberDto.*;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class LoginService {
+public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -27,33 +28,34 @@ public class LoginService {
     private final MyUserDetailsService myUserDetailsService;
 
     @Transactional
-    public Long signUp(String userId, String pw){ // 회원가입
+    public SignUpResponseDto signUp(SignUpRequestDto dto){ // 회원가입
         // 중복체크
-        validateDuplicateUser(userId);
-        String encodePw = passwordEncoder.encode(pw);
+        validateDuplicateUser(dto.getUserId());
+        String encodePw = passwordEncoder.encode(dto.getPw());
 
-        return memberRepository.save(Member.testCreate(userId, encodePw)).getId();
+        memberRepository.save(Member.testCreate(dto.getUserId(), encodePw));
+        return new SignUpResponseDto();
+
     }
 
-    @Transactional()
-    public SignInResponseDto signIn(String userId, String pw) {
-        UserDetails userDetails = myUserDetailsService.loadUserByUsername(userId);
+    @Transactional
+    public LoginResponseDto signIn(LoginRequestDto dto) {
+        UserDetails userDetails = myUserDetailsService.loadUserByUsername(dto.getUserId());
 
-        if(!passwordEncoder.matches(pw, userDetails.getPassword())){
-            throw new BadCredentialsException(userDetails.getUsername() + "Invalid password");
+        if(!passwordEncoder.matches(dto.getPw(), userDetails.getPassword())){
+            throw new PwNotMatchException("userId : " + userDetails.getUsername() + " Invalid password");
         }
 
         Authentication authentication =  new UsernamePasswordAuthenticationToken(
                 userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
-
-        return new SignInResponseDto("Bearer-"+jwtTokenProvider.createAccessToken(authentication));
+        return new LoginResponseDto("Bearer-"+jwtTokenProvider.createAccessToken(authentication));
     }
 
     private void validateDuplicateUser(String userId){
         memberRepository.findByUserId(userId)
                         .ifPresent(member -> {
                             log.debug("userId : {}, 아이디 중복으로 회원가입 실패", userId);
-                            throw new RuntimeException("아이디 중복");
+                            throw new DuplicateUserIdException("아이디 중복");
                         });
     }
 }

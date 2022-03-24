@@ -1,13 +1,10 @@
 package com.example.woowabackend.security.config;
 
-import com.example.woowabackend.security.jwt.JwtAccessDeniedHandler;
 import com.example.woowabackend.security.jwt.JwtTokenFilterConfigurer;
 import com.example.woowabackend.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -24,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -45,16 +41,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //session 사용 안함
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.exceptionHandling()
-                .accessDeniedHandler(jwtAccessDeniedHandler);
-
         http.authorizeRequests()
                 .antMatchers("/api/**").permitAll()
                         .antMatchers("/auth/**").authenticated()
                         .anyRequest().permitAll();
-//        http.formLogin()
-//                .loginPage("/login")
-//                .successForwardUrl("/");
 
         http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
 
@@ -65,9 +55,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
 }
