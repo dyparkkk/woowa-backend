@@ -65,7 +65,9 @@ public class Member {
             return Arrays.asList(roles.split(","));
         }
         return new ArrayList<>();
+
     }
+
 
     @Builder
     private Member(String userId, String pw) {
