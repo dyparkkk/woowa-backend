@@ -1,4 +1,4 @@
-package com.example.woowabackend.comment.repo;
+package com.example.woowabackend.comment.repository;
 
 import com.example.woowabackend.comment.domain.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;

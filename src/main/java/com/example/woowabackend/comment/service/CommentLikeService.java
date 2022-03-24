@@ -2,9 +2,8 @@ package com.example.woowabackend.comment.service;
 
 import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.comment.domain.CommentLike;
-import com.example.woowabackend.comment.repo.CommentLikeRepository;
-import com.example.woowabackend.comment.repo.CommentRepository;
-import com.example.woowabackend.member.domain.Member;
+import com.example.woowabackend.comment.repository.CommentLikeRepository;
+import com.example.woowabackend.comment.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

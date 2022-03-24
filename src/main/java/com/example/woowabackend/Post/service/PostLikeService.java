@@ -5,7 +5,7 @@ import com.example.woowabackend.Post.domain.PostLike;
 import com.example.woowabackend.Post.repository.PostLikeRepository;
 import com.example.woowabackend.Post.repository.PostRepository;
 import com.example.woowabackend.member.domain.Member;
-import com.example.woowabackend.member.domain.MemberRepository;
+import com.example.woowabackend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class PostLikeService {
         Post post = postRepository.findById(postId).orElseThrow();
         Member member = memberRepository.findById(memberId).orElseThrow();
         PostLike postlike = postLikeRepository.findByMemberIdAndPostId(memberId,postId).orElseThrow();
-       postLikeRepository.delete(postlike);
+        postLikeRepository.delete(postlike);
     }
 
     public void count(Long id) {

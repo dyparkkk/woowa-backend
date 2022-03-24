@@ -3,6 +3,7 @@ package com.example.woowabackend.Post.domain;
 import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.util.domain.BaseTimeEntity;
+import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import static javax.persistence.FetchType.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Setter
+@Getter
 public class Post extends BaseTimeEntity {
 
     @Id
@@ -38,14 +39,15 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    private String tagList; // string 줄줄이로
-
     @Column
+    @NotNull
     private Long viewCnt;
 
     @Column
+    @NotNull
     private Long likeCnt;
 
+    @NotNull
     private Long commentCnt;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
@@ -54,8 +56,14 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post")
     private List<PostLike> postLikes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post")
+    private List<Scrap> scraps = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<PostTag> postTags = new ArrayList<>();
+
     @Builder
-    public Post(String title, String content, String auth, String img, Long likeCnt, String tagList, Long viewCnt, Long commentCnt,String deleteYn){
+    public Post(String title, String content, String auth, String img, Long likeCnt, Long viewCnt, Long commentCnt,String deleteYn){
         this.title = title;
         this.content = content;
         this.auth = auth;
@@ -83,11 +91,24 @@ public class Post extends BaseTimeEntity {
    public void increaseLikeCnt(){
         this.likeCnt++;
    }
-    public void deleteLikeCnt(){
+   public void deleteLikeCnt(){
         this.likeCnt--;
     }
 
     public void delete(){
         this.deleteYn = "Y";
+    }
+
+    public void addPostTag(PostTag postTag){
+        postTag.setPost(this);
+        this.getPostTags().add(postTag);
+    }
+
+    public boolean Tag(String tagName){
+        for(PostTag postTag : postTags){
+            if(postTag.getTag().getName().equals(tagName));
+            return true;
+        }
+        return false;
     }
 }

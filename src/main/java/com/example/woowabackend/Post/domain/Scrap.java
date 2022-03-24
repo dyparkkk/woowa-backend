@@ -2,8 +2,10 @@ package com.example.woowabackend.Post.domain;
 
 import com.example.woowabackend.member.domain.Member;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -11,10 +13,11 @@ import static javax.persistence.FetchType.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@Getter @Setter
 public class Scrap {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = LAZY)
@@ -24,6 +27,12 @@ public class Scrap {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @Builder
+    public Scrap(Post post, Member member){
+        this.post = post;
+        this.member = member;
+    }
 
     // 연관관계 편의 메서드
     public void setMember(Member member){

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -32,7 +33,7 @@ public class PostLikeController {
     public void addLike(@PathVariable("id") Long id,  @RequestParam("memberId")Long memberId,Model model) {
         PostResponseDto dto = postService.findById(id);
         postLikeService.addLike(memberId,id);
-       postLikeService.count(id);
+        postLikeService.count(id);
         model.addAttribute("post", dto);
     }
 }

@@ -1,17 +1,16 @@
 package com.example.woowabackend.comment.service;
 
 import com.example.woowabackend.Post.domain.Post;
-import com.example.woowabackend.Post.repo.PostRepository;
+import com.example.woowabackend.Post.repository.PostRepository;
 import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.comment.dto.CommentSaveDto;
-import com.example.woowabackend.comment.repo.CommentRepository;
+import com.example.woowabackend.comment.repository.CommentRepository;
 import com.example.woowabackend.member.domain.Member;
-import com.example.woowabackend.member.repo.MemberRepository;
+import com.example.woowabackend.member.repository.MemberRepository;
+import com.example.woowabackend.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class CommentService {
