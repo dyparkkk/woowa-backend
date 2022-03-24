@@ -24,14 +24,8 @@ public class CommentLike {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-/*  Member merge 이후 사용
-public CommentLike(Member member, Comment comment){
+    public CommentLike(Member member, Comment comment){
         this.member = member;
         this.comment = comment;
-    }*/
-    public CommentLike(Comment comment){
-    this.comment = comment;
     }
-
-    // 연관관계 편의 메서드 ...
 }
