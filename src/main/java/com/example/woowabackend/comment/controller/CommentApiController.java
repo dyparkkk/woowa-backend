@@ -28,7 +28,7 @@ public class CommentApiController {
     }
 
     // 댓글 삭제 (디비에서 삭제 안하고 delYN으로 표기)
-    @DeleteMapping("/api/post/{postId}/comment")
+    @PutMapping("/api/post/{postId}/comment")
     public Long commentDelete(@RequestBody CommentSaveDto commentSaveDto){
         commentService.delete(commentSaveDto.getCommentId());
         return commentSaveDto.getCommentId();
