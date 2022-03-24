@@ -4,7 +4,6 @@ import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.PostLike;
 import com.example.woowabackend.Post.repository.PostLikeRepository;
 import com.example.woowabackend.Post.repository.PostRepository;
-import com.example.woowabackend.member.domain.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,12 +1,12 @@
 package com.example.woowabackend.comment.service;
 
 import com.example.woowabackend.Post.domain.Post;
-import com.example.woowabackend.Post.repo.PostRepository;
+import com.example.woowabackend.Post.repository.PostRepository;
 import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.comment.dto.CommentSaveDto;
 import com.example.woowabackend.comment.repo.CommentRepository;
 import com.example.woowabackend.member.domain.Member;
-import com.example.woowabackend.member.repo.MemberRepository;
+import com.example.woowabackend.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,7 +68,18 @@ public class CommentService {
     }
 
     @Transactional
-    public void delete(Long commentId){
-        commentRepository.deleteById(commentId);
+    public Long delete(Long commentId){
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new
+                IllegalArgumentException("Comment Not found."));
+        comment.update();
+        return commentId;
+    }
+
+    @Transactional
+    public Long postDelete(Long postId){
+        Comment comment = commentRepository.findById(postId).orElseThrow(() -> new
+                IllegalArgumentException("Comment Not found."));
+        comment.update();
+        return postId;
     }
 }
