@@ -4,11 +4,9 @@ import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.Scrap;
 import com.example.woowabackend.Post.repository.PostRepository;
 import com.example.woowabackend.Post.repository.ScrapRepository;
-import com.example.woowabackend.Post.service.PostService;
 import com.example.woowabackend.Post.web.dto.PostScrapResponseDto;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
-import com.example.woowabackend.member.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,8 +28,6 @@ public class ScrapController {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final ScrapRepository scrapRepository;
-    private final LoginService loginService;
-    private final PostService postService;
 
     @GetMapping("/user/scrap/")
     public Object scrapList(@RequestParam Long memberId) {

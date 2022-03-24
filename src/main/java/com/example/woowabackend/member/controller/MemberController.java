@@ -29,14 +29,4 @@ public class MemberController {
         return loginService.signIn(dto);
     }
 
-    @GetMapping("/api/test")
-    public Long test() {
-        throw new RuntimeException("hi");
-    }
-
-//    @ExceptionHandler({DuplicateUserIdException.class, UsernameNotFoundException.class,PwNotMatchException.class})
-//    public ErrorResponse illegalExHandler(DuplicateUserIdException e) {
-//        log.error("[exceptionHandler] ex ", e);
-//        return new ErrorResponse("invalid_parameter", e.getMessage());
-//    }
 }

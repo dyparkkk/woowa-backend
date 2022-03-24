@@ -1,9 +1,11 @@
 package com.example.woowabackend.Post.service;
 
 import com.example.woowabackend.Post.domain.Post;
+import com.example.woowabackend.Post.domain.PostTag;
 import com.example.woowabackend.Post.domain.Tag;
 import com.example.woowabackend.Post.repository.PostLikeRepository;
 import com.example.woowabackend.Post.repository.PostRepository;
+import com.example.woowabackend.Post.repository.PostTagRepository;
 import com.example.woowabackend.Post.repository.TagRepository;
 import com.example.woowabackend.Post.web.dto.PostResponseDto;
 import com.example.woowabackend.Post.web.dto.PostSaveRequestDto;
