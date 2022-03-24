@@ -66,7 +66,18 @@ public class CommentService {
     }
 
     @Transactional
-    public void delete(Long commentId){
-        commentRepository.deleteById(commentId);
+    public Long delete(Long commentId){
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new
+                IllegalArgumentException("Comment Not found."));
+        comment.update();
+        return commentId;
+    }
+
+    @Transactional
+    public Long postDelete(Long postId){
+        Comment comment = commentRepository.findById(postId).orElseThrow(() -> new
+                IllegalArgumentException("Comment Not found."));
+        comment.update();
+        return postId;
     }
 }

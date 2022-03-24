@@ -37,11 +37,9 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "parent_id")
     private Comment parent;
 
-    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    @Builder.Default
+    @OneToMany(mappedBy = "parent")
     private List<Comment> children = new ArrayList<>();
-
-/*    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
-    Set<CommentLike> likes = new HashSet<>();*/
 
     @OneToMany(mappedBy = "comment")
     private List<CommentLike> likes;
@@ -49,7 +47,12 @@ public class Comment extends BaseTimeEntity {
     @ColumnDefault("0")
     private Long likeCnt;
 
-    //private boolean isRemoved = false;
+    private String deleteYN = "N";
+
+    public void update(){
+        this.deleteYN = "Y";
+    }
+
 
  /*   public void confirmMember(Member member){
         this.member = member;
@@ -74,57 +77,12 @@ public class Comment extends BaseTimeEntity {
         this.content = content;
     }*/
 
-/*    public void delete() {
-        this.isRemoved = true;
-    }
-
-    public Comment(String content, Member member, Post post, Comment parent){
+/*   public Comment(String content, Member member, Post post, Comment parent){
         this.content = content;
         this.member = member;
         this.post = post;
         this.parent = parent;
         this.isRemoved = false;
     }*/
-
-/*    public List<Comment> findRemovableList() {
-        List<Comment> result = new ArrayList<>();
-
-        Optional.ofNullable(this.parent).ifPresentOrElse(
-                parentComment -> {
-                    if(parentComment.isRemoved() && parentComment.isAllChildRemoved()){
-                        result.addAll(parentComment.getChildren());
-                        result.add(parentComment);
-                    }
-                },
-                () -> {
-                    if(isAllChildRemoved()) {
-                        result.add(this);
-                        result.addAll(this.getChildren());
-                    }
-                }
-        );
-        return result;
-    }
-
-    private boolean isAllChildRemoved() {
-        return getChildren().stream()
-                .map(Comment::isRemoved)
-                .filter(isRemove -> !isRemove)
-                .findAny()
-                .orElse(true);
-    }*/
-
-/*    @Override
-    public List<Comment> findCommentByTicketId(Long ticketId){
-        return query
-    }*/
-
-//    private Integer arg; // 댓글인지 대댓글인지
-//    private Integer order;
-//    private Integer groupNum;
-//    private Long likeCnt;
-//
-//    @OneToMany(mappedBy = "comment")
-//    private List<CommentLike> commentLikes = new ArrayList<>();
 
 }
