@@ -1,10 +1,10 @@
-package com.example.woowabackend.Post.web;
+package com.example.woowabackend.Post.controller;
 
 import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.Scrap;
 import com.example.woowabackend.Post.repository.PostRepository;
 import com.example.woowabackend.Post.repository.ScrapRepository;
-import com.example.woowabackend.Post.web.dto.PostScrapResponseDto;
+import com.example.woowabackend.Post.controller.dto.PostScrapResponseDto;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
