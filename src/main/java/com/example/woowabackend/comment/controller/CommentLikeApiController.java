@@ -17,11 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentLikeApiController {
     private final CommentLikeService commentLikeService;
 
+/*    @PostMapping("/api/comment/{commentId}/addLike")
+    public Long addLike(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long commentId){
+        boolean result;
+        String username = userDetails.getUsername();
+        result = commentLikeService.addLike(username,commentId);
+        return 200L;
+    }*/
+
     @PostMapping("/api/comment/{commentId}/addLike")
     public Long addLike(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long commentId){
         boolean result;
         String username = userDetails.getUsername();
-        //String username = "test2";
         result = commentLikeService.addLike(username,commentId);
         return 200L;
     }
