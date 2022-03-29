@@ -1,0 +1,26 @@
+package com.example.woowabackend.comment.controller.dto;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+public class CommentSaveDto {
+    private Long memberId;
+    private Long postId;
+    private Long parentId;
+    private Long commentId;
+    private String content;
+
+    @Data
+    @NoArgsConstructor
+    public static class CommentResponseDto {
+        private final Boolean success = true;
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class SuccessResponseDto {
+        private final Boolean success = true;
+    }
+}

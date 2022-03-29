@@ -1,12 +1,8 @@
 package com.example.woowabackend.member.controller;
 
-import com.example.woowabackend.member.exception.DuplicateUserIdException;
-import com.example.woowabackend.member.exception.ErrorResponse;
-import com.example.woowabackend.member.exception.PwNotMatchException;
 import com.example.woowabackend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.woowabackend.member.controller.dto.MemberDto.*;

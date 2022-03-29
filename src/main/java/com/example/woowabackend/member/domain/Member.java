@@ -58,6 +58,7 @@ public class Member {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.birth = birth;
+        this.roles = "ROLE_USER";
     }
 
     public List<String> getRoleList() {
