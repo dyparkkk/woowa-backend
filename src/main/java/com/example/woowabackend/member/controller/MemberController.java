@@ -1,7 +1,9 @@
 package com.example.woowabackend.member.controller;
 
+import com.example.woowabackend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import com.example.woowabackend.member.domain.SessionConst;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
