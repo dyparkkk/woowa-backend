@@ -1,24 +1,13 @@
-package com.example.woowabackend.Post.web;
+package com.example.woowabackend.Post.controller;
 
-import com.example.woowabackend.Post.domain.Post;
-import com.example.woowabackend.Post.domain.Scrap;
-import com.example.woowabackend.Post.repository.ScrapRepository;
 import com.example.woowabackend.Post.service.PostService;
-import com.example.woowabackend.Post.web.dto.PostResponseDto;
-import com.example.woowabackend.member.domain.Member;
-import com.example.woowabackend.member.repository.MemberRepository;
+import com.example.woowabackend.Post.controller.dto.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Controller

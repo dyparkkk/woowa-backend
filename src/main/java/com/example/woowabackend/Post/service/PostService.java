@@ -1,5 +1,6 @@
 package com.example.woowabackend.Post.service;
 
+import com.example.woowabackend.Post.controller.dto.PostResponseDto;
 import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.PostTag;
 import com.example.woowabackend.Post.domain.Tag;
@@ -7,13 +8,16 @@ import com.example.woowabackend.Post.repository.PostLikeRepository;
 import com.example.woowabackend.Post.repository.PostRepository;
 import com.example.woowabackend.Post.repository.PostTagRepository;
 import com.example.woowabackend.Post.repository.TagRepository;
-import com.example.woowabackend.Post.web.dto.PostResponseDto;
-import com.example.woowabackend.Post.web.dto.PostSaveRequestDto;
-import com.example.woowabackend.Post.web.dto.PostUpdateRequestDto;
+import static com.example.woowabackend.Post.controller.dto.PostResponseDto.*;
+import com.example.woowabackend.Post.controller.dto.PostSaveRequestDto;
+import com.example.woowabackend.Post.controller.dto.PostUpdateRequestDto;
 import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.comment.repository.CommentRepository;
+import com.example.woowabackend.member.domain.Member;
+import com.example.woowabackend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,18 +29,17 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PostService {
     private final PostRepository postRepository;
-    private final PostLikeRepository postLikeRepository;
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
-    private final PostTagService postTagService;
     private final CommentRepository commentRepository;
-    private Object Integer;
+    private final MemberRepository memberRepository;
 
     @Transactional
-    public Long save(PostSaveRequestDto requestDto,List<String> tagName) {
+    public PostCreateResponseDto save(PostSaveRequestDto requestDto, List<String> tagName) {
         Post post = requestDto.toEntity();
         postRepository.save(post);
 
+        //태그 생성
         for (String name : tagName) {
             Tag tag = tagRepository.findByName(name);
             if (tag == null) {
@@ -47,15 +50,15 @@ public class PostService {
                 postTagRepository.save(new PostTag(tag,post));
             }
         }
-        return post.getId();
+        return new PostCreateResponseDto();
     }
     @Transactional
-    public Long update (Long id, PostUpdateRequestDto requestDto){
+    public PostUpdateResponseDto update (Long id, PostUpdateRequestDto requestDto){
         Post post = postRepository.findById(id).orElseThrow(() -> new
                 IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
         post.update(requestDto.getTitle(), requestDto.getContent());
-        return id;
+        return new PostUpdateResponseDto();
     }
 
     public PostResponseDto findById (Long id){
@@ -86,10 +89,11 @@ public class PostService {
     }
 
     @Transactional
-    public Long delete(Long id) {
+    public PostDeleteResponseDto delete(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new
                 IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
+        //태그 삭제
         List<PostTag> postTags = post.getPostTags();
         for(PostTag eachPostTag : postTags){
             if(eachPostTag.getTag().getPostTags().size()==1) tagRepository.delete(eachPostTag.getTag());
@@ -102,7 +106,7 @@ public class PostService {
         for(int i=0; i<comment.size(); i++){
             comment.get(i).update();
         }
-        return id;
+        return new PostDeleteResponseDto();
     }
 
     public List<Tag> findTags () {

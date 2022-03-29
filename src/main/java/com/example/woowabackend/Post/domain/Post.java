@@ -99,9 +99,9 @@ public class Post extends BaseTimeEntity {
         this.deleteYn = "Y";
     }
 
-    public void addPostTag(PostTag postTag){
-        postTag.setPost(this);
-        this.getPostTags().add(postTag);
+    public void setPostAuth(Member member){
+        this.member = member;
+        member.getPost().add(this);
     }
 
     public boolean Tag(String tagName){

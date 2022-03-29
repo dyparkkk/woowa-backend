@@ -1,18 +1,16 @@
-package com.example.woowabackend.Post.web;
+package com.example.woowabackend.Post.controller;
 
-import com.example.woowabackend.Post.domain.Post;
-import com.example.woowabackend.Post.domain.Tag;
-import com.example.woowabackend.Post.repository.TagRepository;
+import static com.example.woowabackend.Post.controller.dto.PostResponseDto.*;
+
+import com.example.woowabackend.Post.controller.dto.PostResponseDto;
 import com.example.woowabackend.Post.service.FileSystemStorageService;
 import com.example.woowabackend.Post.service.PostService;
-import com.example.woowabackend.Post.service.PostTagService;
-import com.example.woowabackend.Post.web.dto.PostResponseDto;
-import com.example.woowabackend.Post.web.dto.PostSaveRequestDto;
-import com.example.woowabackend.Post.web.dto.PostUpdateRequestDto;
-import com.example.woowabackend.Post.web.dto.TagSaveDto;
+import com.example.woowabackend.Post.controller.dto.PostSaveRequestDto;
+import com.example.woowabackend.Post.controller.dto.PostUpdateRequestDto;
+import com.example.woowabackend.member.controller.dto.MemberDto;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.example.woowabackend.security.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -27,13 +25,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 
 
 @Slf4j
@@ -42,30 +35,32 @@ import java.util.Optional;
 public class PostApiController {
 
     private final PostService postService;
+    private final MemberRepository memberRepository;
+    private final MyUserDetailsService myUserDetailsService;
 
     private final FileSystemStorageService storageService;
 
     @PostMapping("/api/post")
-    public PostResponseDto save(@RequestBody PostSaveRequestDto requestDto,@AuthenticationPrincipal UserDetails userDetails,
-                     @RequestParam(value = "tags", defaultValue = "false") List<String> tags){
-
+    public PostCreateResponseDto save(@RequestBody PostSaveRequestDto requestDto,
+                                      @RequestParam(value = "tags", defaultValue = "false") List<String> tags){
 
         PostResponseDto responseDto= new PostResponseDto();
         responseDto.setHashtag(tags);
+
        postService.save(requestDto,tags);
 
-        return responseDto;
+        return postService.save(requestDto,tags);
     }
 
     @PutMapping("/api/post/{id}")
-    public Long update(@PathVariable Long id, @RequestBody PostUpdateRequestDto requestDto){
+    public PostUpdateResponseDto update(@PathVariable Long id, @RequestBody PostUpdateRequestDto requestDto){
         return postService.update(id,requestDto);
     }
 
     @DeleteMapping("/api/post/{id}")
-    public Long delete(@PathVariable Long id) {
-       postService.delete(id);
-       return id;
+    public PostDeleteResponseDto delete(@PathVariable Long id) {
+
+       return  postService.delete(id);
     }
 
     @GetMapping("/api/post/{id}")

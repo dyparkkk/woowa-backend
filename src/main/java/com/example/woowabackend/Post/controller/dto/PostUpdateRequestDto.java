@@ -1,4 +1,4 @@
-package com.example.woowabackend.Post.web.dto;
+package com.example.woowabackend.Post.controller.dto;
 
 import lombok.Builder;
 import lombok.Getter;

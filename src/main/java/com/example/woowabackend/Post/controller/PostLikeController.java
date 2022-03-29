@@ -1,8 +1,9 @@
-package com.example.woowabackend.Post.web;
+package com.example.woowabackend.Post.controller;
 
+import com.example.woowabackend.Post.controller.dto.PostResponseDto;
 import com.example.woowabackend.Post.service.PostLikeService;
 import com.example.woowabackend.Post.service.PostService;
-import com.example.woowabackend.Post.web.dto.PostResponseDto;
+import static com.example.woowabackend.Post.controller.dto.PostResponseDto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
@@ -30,10 +31,9 @@ public class PostLikeController {
     }
 
     @GetMapping("/like/{id}")
-    public void addLike(@PathVariable("id") Long id,  @RequestParam("memberId")Long memberId,Model model) {
-        PostResponseDto dto = postService.findById(id);
+    public void addLike(@PathVariable("id") Long id,  @RequestParam("memberId")Long memberId) {
         postLikeService.addLike(memberId,id);
         postLikeService.count(id);
-        model.addAttribute("post", dto);
     }
+
 }

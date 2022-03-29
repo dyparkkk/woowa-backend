@@ -9,6 +9,8 @@ import com.example.woowabackend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.example.woowabackend.Post.controller.dto.PostResponseDto.*;
+
 @RequiredArgsConstructor
 @Service
 public class PostLikeService {
@@ -33,7 +35,7 @@ public class PostLikeService {
     public void cancelLike(Long memberId, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow();
         Member member = memberRepository.findById(memberId).orElseThrow();
-        PostLike postlike = postLikeRepository.findByMemberIdAndPostId(memberId,postId).orElseThrow();
+        PostLike postlike = postLikeRepository.findByMemberIdAndPostId(member.getId(),post.getId()).orElseThrow();
         postLikeRepository.delete(postlike);
     }
 

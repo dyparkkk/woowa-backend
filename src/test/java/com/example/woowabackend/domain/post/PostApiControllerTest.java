@@ -1,10 +1,9 @@
 package com.example.woowabackend.domain.post;
 
 import com.example.woowabackend.Post.domain.Post;
-import com.example.woowabackend.Post.domain.Tag;
 import com.example.woowabackend.Post.repository.PostRepository;
-import com.example.woowabackend.Post.web.dto.PostSaveRequestDto;
-import com.example.woowabackend.Post.web.dto.PostUpdateRequestDto;
+import com.example.woowabackend.Post.controller.dto.PostSaveRequestDto;
+import com.example.woowabackend.Post.controller.dto.PostUpdateRequestDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;

@@ -1,5 +1,6 @@
 package com.example.woowabackend.member.domain;
 
+import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.PostLike;
 import com.example.woowabackend.Post.domain.Scrap;
 import com.example.woowabackend.comment.domain.CommentLike;
@@ -39,6 +40,9 @@ public class Member {
 
     private Boolean schoolCheck;
     private Boolean alarmCheck;
+
+    @OneToMany(mappedBy = "member")
+    private List<Post> post = new ArrayList<Post>();
 
     @OneToMany(mappedBy = "member")
     private List<Scrap> scraps = new ArrayList<>(); // 중복을 방지하기 위해서 Set 사용 고려
