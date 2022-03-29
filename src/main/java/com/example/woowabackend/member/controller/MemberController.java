@@ -1,9 +1,12 @@
 package com.example.woowabackend.member.controller;
 
-import com.example.woowabackend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import com.example.woowabackend.member.domain.SessionConst;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import static com.example.woowabackend.member.controller.dto.MemberDto.*;
 
@@ -14,15 +17,22 @@ public class MemberController {
 
     private final MemberService loginService;
 
-    @PostMapping("/api/v1/signUp") // 회원가입
-    public SignUpResponseDto signUp(@RequestBody SignUpRequestDto dto) {
-        return loginService.signUp(dto);
+    @RequestMapping(value = "/api/v1/signup", method = {RequestMethod.GET, RequestMethod.POST}) // 회원가입
+    public SignUpResponseDto signUp(@Validated @RequestBody SignUpRequestDto dto) {
+        loginService.signUp(dto);
+        return new SignUpResponseDto();
     }
 
+    @PostMapping("/api/v1/signin")
+    public LoginResponseDto login(@RequestBody LoginRequestDto dto,
+                                  HttpServletRequest req) {
+        String userId = loginService.signIn(dto);
 
-    @PostMapping("/api/v1/signIn")
-    public LoginResponseDto login(@RequestBody LoginRequestDto dto) {
-        return loginService.signIn(dto);
+        // 세션 생성
+        HttpSession session = req.getSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, userId);
+
+        return new LoginResponseDto();
     }
 
 }

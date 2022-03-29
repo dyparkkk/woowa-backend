@@ -41,11 +41,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //session 사용 안함
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+
         http.authorizeRequests()
                 .antMatchers("/api/**").permitAll()
-                        .antMatchers("/auth/**").authenticated()
+                .antMatchers("/auth/**").authenticated()
                 .antMatchers("/scrap/**").authenticated()
-                        .anyRequest().permitAll();
+                .anyRequest().permitAll();
 
         http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
 

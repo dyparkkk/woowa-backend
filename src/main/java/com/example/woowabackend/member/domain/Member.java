@@ -21,7 +21,7 @@ import static javax.persistence.FetchType.*;
 @Getter
 public class Member {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "member_id")
     private Long id;
 
@@ -66,15 +66,6 @@ public class Member {
             return Arrays.asList(roles.split(","));
         }
         return new ArrayList<>();
-
-    }
-
-
-    @Builder
-    private Member(String userId, String pw) {
-        this.userId = userId;
-        this.pw = pw;
-        this.roles = "ROLE_USER";
     }
 
     public static Member testCreate(String userId, String pw) {
