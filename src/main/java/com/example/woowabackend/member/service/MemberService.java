@@ -29,11 +29,14 @@ public class MemberService {
 
     @Transactional
     public SignUpResponseDto signUp(SignUpRequestDto dto){ // 회원가입
-        // 중복체크
+        // id 중복체크
         validateDuplicateUser(dto.getUserId());
         String encodePw = passwordEncoder.encode(dto.getPw());
 
+        // member 생성 후 저장
         memberRepository.save(Member.testCreate(dto.getUserId(), encodePw));
+
+        // jwt 발행
         return new SignUpResponseDto();
 
     }

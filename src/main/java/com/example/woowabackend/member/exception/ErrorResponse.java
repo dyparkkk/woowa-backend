@@ -9,7 +9,7 @@ public class ErrorResponse {
     private boolean success;
     private Error error;
 
-    public static ErrorResponse createErrorResponse(boolean success, String code, String message) {
+    public static ErrorResponse createErrorResponse(boolean success, String code, String message, String content) {
         Error error = new Error(code, message);
         return new ErrorResponse(success, error);
     }
