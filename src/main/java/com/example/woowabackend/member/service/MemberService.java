@@ -15,6 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.http.HttpRequest;
+
 import static com.example.woowabackend.member.controller.dto.MemberDto.*;
 
 @Service
@@ -28,30 +31,25 @@ public class MemberService {
     private final MyUserDetailsService myUserDetailsService;
 
     @Transactional
-    public SignUpResponseDto signUp(SignUpRequestDto dto){ // 회원가입
-        // id 중복체크
+    public Long signUp(SignUpRequestDto dto){ // 회원가입
+        // id 중복체크 ( 리펙토링 대상)
         validateDuplicateUser(dto.getUserId());
         String encodePw = passwordEncoder.encode(dto.getPw());
 
         // member 생성 후 저장
-        memberRepository.save(Member.testCreate(dto.getUserId(), encodePw));
-
-        // jwt 발행
-        return new SignUpResponseDto();
-
+        Member member = memberRepository.save(Member.testCreate(dto.getUserId(), encodePw));
+        return member.getId();
     }
 
     @Transactional
-    public LoginResponseDto signIn(LoginRequestDto dto) {
+    public String signIn(LoginRequestDto dto) {
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(dto.getUserId());
 
         if(!passwordEncoder.matches(dto.getPw(), userDetails.getPassword())){
             throw new PwNotMatchException("userId : " + userDetails.getUsername() + " Invalid password");
         }
 
-        Authentication authentication =  new UsernamePasswordAuthenticationToken(
-                userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
-        return new LoginResponseDto("Bearer-"+jwtTokenProvider.createAccessToken(authentication));
+       return userDetails.getUsername();
     }
 
     private void validateDuplicateUser(String userId){

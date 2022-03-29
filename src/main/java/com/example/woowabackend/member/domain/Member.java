@@ -58,6 +58,7 @@ public class Member {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.birth = birth;
+        this.roles = "ROLE_USER";
     }
 
     public List<String> getRoleList() {
@@ -65,15 +66,6 @@ public class Member {
             return Arrays.asList(roles.split(","));
         }
         return new ArrayList<>();
-
-    }
-
-
-    @Builder
-    private Member(String userId, String pw) {
-        this.userId = userId;
-        this.pw = pw;
-        this.roles = "ROLE_USER";
     }
 
     public static Member testCreate(String userId, String pw) {
