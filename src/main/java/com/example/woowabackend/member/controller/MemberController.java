@@ -32,7 +32,7 @@ public class MemberController {
 
         // 세션 생성
         HttpSession session = req.getSession();
-        session.setAttribute(SessionConst.LIGIN_MEMBER, userId);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, userId);
 
         return new LoginResponseDto();
     }

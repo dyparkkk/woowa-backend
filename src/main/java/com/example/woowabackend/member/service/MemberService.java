@@ -27,7 +27,6 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
     private final MyUserDetailsService myUserDetailsService;
 
     @Transactional
@@ -52,6 +51,7 @@ public class MemberService {
        return userDetails.getUsername();
     }
 
+    // 회원가입할 때 유저 중복 확인
     private void validateDuplicateUser(String userId){
         memberRepository.findByUserId(userId)
                         .ifPresent(member -> {

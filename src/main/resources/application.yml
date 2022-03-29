@@ -4,6 +4,8 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+#    initialization-mode: always
+    platform: h2
   main:
       allow-circular-references: true
   h2.console:
@@ -13,18 +15,16 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect    # H2Dialect, MySQL57Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         globally_quoted_identifiers: true
 #        show_sql: true
 #        format_sql: true
+    defer-datasource-initialization: true
 
   output.ansi.enabled: always  # terminal color
 
-  redis:
-    host: localhost
-    port: 6379
 
 jwt:
   secret-key: secret-key-lalala-lululu-fucking-error-WeakKeyException-not-secure-enough
