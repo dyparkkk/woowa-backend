@@ -1,14 +1,15 @@
 package com.example.woowabackend.Post.controller;
 
 import static com.example.woowabackend.Post.controller.dto.PostResponseDto.*;
+import static com.example.woowabackend.member.controller.SessionConst.*;
 
 import com.example.woowabackend.Post.controller.dto.PostResponseDto;
 import com.example.woowabackend.Post.service.FileSystemStorageService;
 import com.example.woowabackend.Post.service.PostService;
 import com.example.woowabackend.Post.controller.dto.PostSaveRequestDto;
 import com.example.woowabackend.Post.controller.dto.PostUpdateRequestDto;
+import com.example.woowabackend.member.controller.SessionConst;
 import com.example.woowabackend.member.domain.Member;
-import com.example.woowabackend.member.domain.SessionConst;
 import com.example.woowabackend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,7 @@ public class PostApiController {
     @PostMapping("/api/post")
     public PostCreateResponseDto save(@RequestBody PostSaveRequestDto requestDto,
                                       @RequestParam(value = "tags", defaultValue = "false") List<String> tags,
-                                      @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = true) String userId){
+                                      @SessionAttribute(value = LOGIN_MEMBER, required = true) String userId){
         requestDto.setAuth(userId);
         Member member = memberRepository.findByUserId(userId).orElseThrow();
 

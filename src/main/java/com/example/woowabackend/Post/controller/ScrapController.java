@@ -1,15 +1,14 @@
 package com.example.woowabackend.Post.controller;
 
-import com.example.woowabackend.Post.controller.dto.PostScrapResponseDto;
 import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.Scrap;
 import com.example.woowabackend.Post.repository.PostRepository;
 import com.example.woowabackend.Post.repository.ScrapRepository;
 import static com.example.woowabackend.Post.controller.dto.PostScrapResponseDto.*;
+import static com.example.woowabackend.member.controller.SessionConst.*;
 
 import com.example.woowabackend.Post.service.ScrapService;
 import com.example.woowabackend.member.domain.Member;
-import com.example.woowabackend.member.domain.SessionConst;
 import com.example.woowabackend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -51,7 +48,7 @@ public class ScrapController {
 
     @PostMapping("/api/post/scrap/")
     public ScrapAddResponseDto userScrapAdd(@RequestParam Long postId,
-                                            @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = true) String userId){
+                                            @SessionAttribute(value = LOGIN_MEMBER, required = true) String userId){
         Member member = memberRepository.findByUserId(userId).orElseThrow();
         Long memberId = member.getId();
 
@@ -63,7 +60,7 @@ public class ScrapController {
 
     @DeleteMapping("/api/post/scrap/")
     public ScrapRemoveResponseDto userScrapRemove(@RequestParam Long postId,
-                                                  @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = true) String userId){
+                                                  @SessionAttribute(value = LOGIN_MEMBER, required = true) String userId){
         Member member = memberRepository.findByUserId(userId).orElseThrow();
         Long memberId = member.getId();
         Post post = postRepository.findById(postId).orElseThrow();
