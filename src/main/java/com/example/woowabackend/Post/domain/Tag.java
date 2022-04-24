@@ -16,7 +16,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Setter
+@Getter
 public class Tag {
 
     @Id
@@ -34,4 +34,7 @@ public class Tag {
         this.name = name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 }

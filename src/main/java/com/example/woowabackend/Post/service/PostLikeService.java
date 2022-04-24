@@ -20,25 +20,27 @@ public class PostLikeService {
     private final MemberRepository memberRepository;
 
     //좋아요
-    public boolean addLike(Long memberId, Long postId){
+    public PostsAddListResponseDto addLike(Long memberId, Long postId){
         Post post = postRepository.findById(postId).orElseThrow();
         Member member = memberRepository.findById(memberId).orElseThrow();
 
         //중복방지
         if(isNotAlreadyLike(memberId,postId)){
             postLikeRepository.save(new PostLike(post,member));
-            return true;
         }
-        return false;
+        return new PostsAddListResponseDto();
     }
 
-    public void cancelLike(Long memberId, Long postId) {
+    //좋아요 취소
+    public PostDeleteLikeResponseDto cancelLike(Long memberId, Long postId) {
         Post post = postRepository.findById(postId).orElseThrow();
         Member member = memberRepository.findById(memberId).orElseThrow();
         PostLike postlike = postLikeRepository.findByMemberIdAndPostId(member.getId(),post.getId()).orElseThrow();
         postLikeRepository.delete(postlike);
+        return new PostDeleteLikeResponseDto();
     }
 
+    //좋아요 수 카운트
     public void count(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new  IllegalArgumentException("실패"));
@@ -46,6 +48,8 @@ public class PostLikeService {
         postRepository.save(post);
 
     }
+
+    //좋아요 취소 카운트
     public void DeleteCount(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new  IllegalArgumentException("실패"));

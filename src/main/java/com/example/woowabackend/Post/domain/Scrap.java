@@ -13,7 +13,7 @@ import static javax.persistence.FetchType.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Setter
+@Getter
 public class Scrap {
 
     @Id
@@ -42,4 +42,7 @@ public class Scrap {
         member.getScraps().add(this);
     }
 
+    public void setPost(Post post) {
+        this.post = post;
+    }
 }

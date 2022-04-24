@@ -4,7 +4,6 @@ import com.example.woowabackend.Post.domain.Post;
 
 import com.example.woowabackend.member.domain.Member;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,9 +16,8 @@ public class PostSaveRequestDto {
     private String content;
     private String auth;
     private String tags;
-    private Long member;
     private Long postId;
-
+    private Member member;
 
 
     @Builder
@@ -37,9 +35,12 @@ public class PostSaveRequestDto {
                 .title(title)
                 .content(content)
                 .auth(auth)
+                .member(member)
                 .build();
     }
 
-
+    public void setMember(Member member) {
+        this.member = member;
+    }
 
 }
