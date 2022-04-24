@@ -2,7 +2,6 @@ package com.example.woowabackend.member.controller;
 
 import com.example.woowabackend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import com.example.woowabackend.member.domain.SessionConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +24,8 @@ public class MemberController {
         return new SignUpResponseDto();
     }
 
-    @PostMapping("/api/v1/signin")
-    public LoginResponseDto login(@RequestBody LoginRequestDto dto,
+    @PostMapping("/api/v1/login")
+    public LoginResponseDto login(@Validated @RequestBody LoginRequestDto dto,
                                   HttpServletRequest req) {
         String userId = loginService.signIn(dto);
 
@@ -36,5 +35,4 @@ public class MemberController {
 
         return new LoginResponseDto();
     }
-
 }

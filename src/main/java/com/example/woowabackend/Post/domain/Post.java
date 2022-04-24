@@ -20,8 +20,7 @@ import static javax.persistence.FetchType.*;
 @Getter
 public class Post extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
 
     private String title;
