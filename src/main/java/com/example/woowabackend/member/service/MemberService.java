@@ -33,6 +33,7 @@ public class MemberService {
     public Long signUp(SignUpRequestDto dto){ // 회원가입
         // id 중복체크 ( 리펙토링 대상)
         validateDuplicateUser(dto.getUserId());
+        // pw 암호화
         String encodePw = passwordEncoder.encode(dto.getPw());
 
         // member 생성 후 저장
@@ -42,8 +43,11 @@ public class MemberService {
 
     @Transactional
     public String signIn(LoginRequestDto dto) {
+        // findMember
+        // 예외처리 문제 있음 ....filter라서
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(dto.getUserId());
 
+        // pw 체크
         if(!passwordEncoder.matches(dto.getPw(), userDetails.getPassword())){
             throw new PwNotMatchException("userId : " + userDetails.getUsername() + " Invalid password");
         }

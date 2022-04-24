@@ -1,4 +1,4 @@
-package com.example.woowabackend.member.domain;
+package com.example.woowabackend.member.controller;
 
 public class SessionConst {
     public final static String LOGIN_MEMBER = "loginMember";
