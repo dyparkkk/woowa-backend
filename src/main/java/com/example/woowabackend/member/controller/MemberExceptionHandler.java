@@ -37,8 +37,16 @@ public class MemberExceptionHandler {
                 e.getMessage());
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ErrorResponse illegalStateException(Exception e) {
+        log.info("[IllegalStateException] ex = {}", e.getMessage());
+        return ErrorResponse.createErrorResponse(false, "--" + HttpStatus.BAD_REQUEST,
+                "[IllegalStateException]: 적절하지 않은 상태 ex) JSESSIONID 확인 불가 등",
+                e.getMessage());
+    }
+
     @ExceptionHandler
     public ErrorResponse exception(Exception e){
-        return ErrorResponse.createErrorResponse(false, "--"+"???","정의되지 않은 오류( 추가 예정)", e.getMessage());
+        return ErrorResponse.createErrorResponse(false, "--"+"???","오류 : 메시지를 읽어보세요", e.getMessage());
     }
 }
