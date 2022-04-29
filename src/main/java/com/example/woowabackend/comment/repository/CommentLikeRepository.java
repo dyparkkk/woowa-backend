@@ -13,7 +13,5 @@ public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> 
     // Member merge 이후 사용
     Optional<CommentLike> findByMemberAndComment(Member member, Comment comment);
 
-    @Modifying
-    @Query("DELETE FROM CommentLike WHERE comment_id = :commentId")
-    void deleteLikes(long commentId);
+    Optional<CommentLike> findByCommentId (Long commentId);
 }

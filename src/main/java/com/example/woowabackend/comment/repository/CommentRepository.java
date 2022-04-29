@@ -14,19 +14,4 @@ import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByPostId(Long postId);
-
-    @Transactional
-    @Modifying
-    @Query("update Comment c set c.likeCnt = c.likeCnt + 1 where c.id = :id")
-    Integer addLikes(Long id);
-
-    @Transactional
-    @Modifying
-    @Query("update Comment c set c.likeCnt = c.likeCnt - 1 where c.id = :id")
-    Integer subLikes(Long id);
-
-    @Transactional
-    @Modifying
-    @Query("update Comment c set c.likeCnt = 0 where c.id = :id")
-    Integer defaultLikes(Long id);
 }

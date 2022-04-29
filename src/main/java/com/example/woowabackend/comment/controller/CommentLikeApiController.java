@@ -1,5 +1,6 @@
 package com.example.woowabackend.comment.controller;
 
+import com.example.woowabackend.comment.controller.dto.CommentSaveDto.*;
 import com.example.woowabackend.comment.service.CommentLikeService;
 import com.example.woowabackend.member.domain.Member;
 import lombok.RequiredArgsConstructor;
@@ -16,28 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CommentLikeApiController {
     private final CommentLikeService commentLikeService;
-
-/*    @PostMapping("/api/comment/{commentId}/addLike")
-    public Long addLike(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long commentId){
-        boolean result;
-        String username = userDetails.getUsername();
-        result = commentLikeService.addLike(username,commentId);
-        return 200L;
-    }*/
-
+    
     @PostMapping("/api/comment/{commentId}/addLike")
-    public Long addLike(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long commentId){
-        boolean result;
-        String username = userDetails.getUsername();
-        result = commentLikeService.addLike(username,commentId);
-        return 200L;
+    public SuccessResponseDto addLike(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long commentId){
+        //String username = userDetails.getUsername();
+        String username = "test0429@naver.com";
+        return commentLikeService.addLike(username,commentId);
     }
 
     @DeleteMapping("/api/comment/{commentId}/deleteLike")
-    public Long deleteLike(@PathVariable Long commentId){
+    public SuccessResponseDto deleteLike(@PathVariable Long commentId){
         Member member = Member.builder().build();
-        boolean result;
-        result = commentLikeService.deleteLike(member,commentId);
-        return 200L;
+        return commentLikeService.deleteLike(member,commentId);
     }
 }
