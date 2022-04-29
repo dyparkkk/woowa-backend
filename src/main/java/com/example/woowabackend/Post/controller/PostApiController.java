@@ -5,10 +5,7 @@ import static com.example.woowabackend.member.controller.SessionConst.*;
 
 import com.example.woowabackend.Post.controller.dto.PostListResponseDto;
 import com.example.woowabackend.Post.controller.dto.PostResponseDto;
-import com.example.woowabackend.Post.controller.dto.TagSaveDto;
-import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.PostTag;
-import com.example.woowabackend.Post.domain.Tag;
 import com.example.woowabackend.Post.repository.PostRepository;
 import com.example.woowabackend.Post.repository.PostTagRepository;
 import com.example.woowabackend.Post.repository.TagRepository;
@@ -53,7 +50,7 @@ public class PostApiController {
     private final FileSystemStorageService storageService;
 
     @PostMapping("/api/post")
-    public PostCreateResponseDto save(@RequestBody PostSaveRequestDto requestDto,
+    public PostCreateResponseDto postSave(@RequestBody PostSaveRequestDto requestDto,
                                       @RequestParam(value = "tags", defaultValue = "false") List<String> tags,
                                       @SessionAttribute(value = LOGIN_MEMBER, required = true) String userId){
         requestDto.setAuth(userId);
@@ -61,7 +58,6 @@ public class PostApiController {
 
         PostResponseDto responseDto= new PostResponseDto();
         responseDto.setHashtag(tags);
-
 
         return postService.save(requestDto,tags,member);
     }

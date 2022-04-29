@@ -26,7 +26,6 @@ public class Post extends BaseTimeEntity {
     private String title;
     private String content;
     private String auth;
-    private String img;
     private String deleteYn;
 
     @NotNull
@@ -34,10 +33,6 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @NotNull
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "board_id")
-    private Board board;
 
     @Column
     @NotNull
@@ -67,7 +62,6 @@ public class Post extends BaseTimeEntity {
         this.title = title;
         this.content = content;
         this.auth = auth;
-        imgUpload(img);
         this.viewCnt =  0L;
         this.likeCnt = 0L;
         this.commentCnt = 0L;
@@ -76,10 +70,6 @@ public class Post extends BaseTimeEntity {
 
     }
 
-    public Post imgUpload(String img){
-        this.img = img;
-        return this;
-    }
 
     public void update(String title, String content){
         this.title = title;
