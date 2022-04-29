@@ -68,9 +68,10 @@ public class Post extends BaseTimeEntity {
         this.content = content;
         this.auth = auth;
         imgUpload(img);
-        this.viewCnt = viewCnt;
-        this.likeCnt = likeCnt;
-        this.deleteYn = deleteYn;
+        this.viewCnt =  0L;
+        this.likeCnt = 0L;
+        this.commentCnt = 0L;
+        this.deleteYn = "N";
         this.member = member;
 
     }

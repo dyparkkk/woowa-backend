@@ -1,7 +1,7 @@
 package com.example.woowabackend.Post.controller;
 
-import com.example.woowabackend.Post.service.PostService;
 import com.example.woowabackend.Post.controller.dto.PostResponseDto;
+import com.example.woowabackend.Post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -31,11 +31,4 @@ public class PostController {
         return "post-update";
     }
 
-    @GetMapping("/post/detail/{id}")
-    public String postDetail(@PathVariable("id") Long id, Model model) {
-        PostResponseDto dto = postService.findById(id);
-        postService.updateView(id); // views ++
-        model.addAttribute("post", dto);
-        return "post/detail";
-    }
 }
