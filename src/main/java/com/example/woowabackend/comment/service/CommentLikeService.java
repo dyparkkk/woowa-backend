@@ -1,5 +1,6 @@
 package com.example.woowabackend.comment.service;
 
+import com.example.woowabackend.comment.controller.dto.CommentSaveDto.*;
 import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.comment.domain.CommentLike;
 import com.example.woowabackend.comment.repository.CommentLikeRepository;
@@ -20,40 +21,36 @@ public class CommentLikeService {
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
 
-public boolean addLike(String username, Long commentId) {
+    public SuccessResponseDto addLike(String username, Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow();
         Member member = memberRepository.findByUserId(username).orElseThrow();
 
-        Long memberId = member.getId();
-
         //중복 좋아요 방지
         if(isNotAlreadyLike(member, comment)){
-            log.info("isNotAlreadyLike = True");
             commentLikeRepository.save(new CommentLike(member, comment));
-            commentRepository.addLikes(comment.getId());
-            return true;
+            comment.increaseLikeCnt();
+            log.info("Success");
+            return new SuccessResponseDto();
         }
-        return false;
+        log.info("false");
+        return new SuccessResponseDto();
     }
     //사용자가 이미 좋아요 한 댓글인지 체크
     private boolean isNotAlreadyLike(Member member, Comment comment){
-        log.info("isNotAlreadyLike = False");
         return commentLikeRepository.findByMemberAndComment(member, comment).isEmpty();
     }
 
-    public boolean deleteLike(Member member, Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow();
+    public SuccessResponseDto deleteLike(Member member, Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("Like Cancel Fail"));
+        CommentLike commentLike = commentLikeRepository.findByCommentId(commentId).orElseThrow(() -> new IllegalArgumentException("Like Cancel Fail"));
+        commentLikeRepository.delete(commentLike);
 
-        commentLikeRepository.deleteLikes(commentId);
-        log.info("Like Delete Success");
-
-        commentRepository.subLikes(commentId);
-        log.info("Like Count Subtract Success");
+        comment.decreaseLikeCnt();
 
         if(comment.getLikeCnt() < 0){
-            commentRepository.defaultLikes(commentId);
+            comment.getLikeCnt();
         }
 
-        return true;
+        return new SuccessResponseDto();
     }
 }

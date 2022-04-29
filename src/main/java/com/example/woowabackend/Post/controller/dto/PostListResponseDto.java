@@ -6,16 +6,22 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class PostsListResponseDto {
+public class PostListResponseDto {
     private Long id;
     private String title;
     private String auth;
     private LocalDateTime modifiedDate;
+    private Long viewCnt;
+    private Long commentCnt;
 
-    public PostsListResponseDto(Post entity) {
+    public PostListResponseDto(Post entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.auth = entity.getAuth();
         this.modifiedDate = entity.getModifiedDate();
+        this.viewCnt = entity.getViewCnt();
+        this.commentCnt = entity.getCommentCnt();
     }
+
+
 }

@@ -3,14 +3,23 @@ package com.example.woowabackend.Post.controller;
 import static com.example.woowabackend.Post.controller.dto.PostResponseDto.*;
 import static com.example.woowabackend.member.controller.SessionConst.*;
 
+import com.example.woowabackend.Post.controller.dto.PostListResponseDto;
 import com.example.woowabackend.Post.controller.dto.PostResponseDto;
+import com.example.woowabackend.Post.controller.dto.TagSaveDto;
+import com.example.woowabackend.Post.domain.Post;
+import com.example.woowabackend.Post.domain.PostTag;
+import com.example.woowabackend.Post.domain.Tag;
+import com.example.woowabackend.Post.repository.PostRepository;
+import com.example.woowabackend.Post.repository.PostTagRepository;
+import com.example.woowabackend.Post.repository.TagRepository;
 import com.example.woowabackend.Post.service.FileSystemStorageService;
 import com.example.woowabackend.Post.service.PostService;
 import com.example.woowabackend.Post.controller.dto.PostSaveRequestDto;
 import com.example.woowabackend.Post.controller.dto.PostUpdateRequestDto;
-import com.example.woowabackend.member.controller.SessionConst;
+import com.example.woowabackend.Post.service.PostTagService;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
+import com.example.woowabackend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
@@ -34,6 +43,12 @@ public class PostApiController {
 
     private final PostService postService;
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
+    private final PostTagService postTagService;
+    private final PostTagRepository postTagRepository;
+    private final TagRepository tagRepository;
+    private final PostRepository postRepository;
+
 
     private final FileSystemStorageService storageService;
 
@@ -67,6 +82,25 @@ public class PostApiController {
         return postService.findById(id);
     }
 
+    @GetMapping("/api/post/index")
+    public List<PostListResponseDto> index(Model model, @SessionAttribute(value = LOGIN_MEMBER, required = true) String userId) {
+       model.addAttribute("post",postService.findAllDesc());
+        model.addAttribute("member",memberRepository.findByUserId(userId));
+        return postService.findAllDesc();
+    }
+
+    @GetMapping("/post/detail/{id}")
+    public PostResponseDto postDetail(@PathVariable Long id, Long tagId, Model model, @SessionAttribute(value = LOGIN_MEMBER, required = true) String userId ){
+        PostResponseDto dto = postService.findById(id);
+        List<PostTag> postTags =postTagRepository.findByPostId(id);
+
+
+        postService.updateView(id);
+        model.addAttribute("post", dto);
+        model.addAttribute("tags",postTags);
+        return postService.findById(id);
+
+    }
 
     @GetMapping(value = "", params = {"tag"})
     public String getFilteredPosts(Model model, @RequestParam String tag) {

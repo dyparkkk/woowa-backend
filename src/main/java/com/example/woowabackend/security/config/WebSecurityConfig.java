@@ -36,13 +36,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        http.csrf()
+                .ignoringAntMatchers("/h2-console/**")
+                .disable();
 
         //session 사용 안함
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
         http.authorizeRequests()
+                .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/auth/**").authenticated()
                 .antMatchers("/scrap/**").authenticated()
