@@ -1,10 +1,10 @@
 package com.example.woowabackend.Post.service;
 
 import com.example.woowabackend.Post.controller.dto.PostResponseDto;
+import com.example.woowabackend.Post.controller.dto.PostListResponseDto;
 import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.PostTag;
 import com.example.woowabackend.Post.domain.Tag;
-import com.example.woowabackend.Post.repository.PostLikeRepository;
 import com.example.woowabackend.Post.repository.PostRepository;
 import com.example.woowabackend.Post.repository.PostTagRepository;
 import com.example.woowabackend.Post.repository.TagRepository;
@@ -17,7 +17,6 @@ import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,6 +64,7 @@ public class PostService {
         return new PostUpdateResponseDto();
     }
 
+    @Transactional
     public PostResponseDto findById (Long id){
         Post entity = postRepository.findById(id).orElseThrow(() -> new
                 IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
@@ -72,6 +72,7 @@ public class PostService {
     }
 
     //조회수
+    @Transactional
     public void updateView (Long id){
         Post post = postRepository.findById(id).orElseThrow(() -> new
                 IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
@@ -105,6 +106,15 @@ public class PostService {
             comment.get(i).update();
         }
         return new PostDeleteResponseDto();
+    }
+
+    //post 조회
+    @Transactional(readOnly = true)
+    public List<PostListResponseDto> findAllDesc() {
+        return postRepository.findAllDesc().stream()
+                .map(PostListResponseDto::new) // (post) -> {PostListResponseDto(post)}
+                .collect(Collectors.toList());  // stream -> List
+
     }
 
     public List<Tag> findTags () {

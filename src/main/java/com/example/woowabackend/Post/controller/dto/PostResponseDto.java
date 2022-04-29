@@ -1,9 +1,11 @@
 package com.example.woowabackend.Post.controller.dto;
 
 import com.example.woowabackend.Post.domain.Post;
+import com.example.woowabackend.Post.domain.PostTag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -17,9 +19,6 @@ public class PostResponseDto {
     private String auth;
 
     List<String> tags;
-    public boolean status;
-    public String data;
-
 
     public PostResponseDto(Post entity){
         this.id = entity.getId();
@@ -29,9 +28,18 @@ public class PostResponseDto {
     }
 
     public PostResponseDto() {
+        this.id = getId();
         this.title = getTitle();
         this.content = getContent();
         this.auth = getAuth();
+        this.tags = getTags();
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class PostTagResponseDto{
+        List<String> tags = getTags();
     }
 
     @Data
@@ -68,21 +76,9 @@ public class PostResponseDto {
 
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-    public String getData() {
-        return data;
-    }
-    public void setData(String data) {
-        this.data = data;
-    }
-
     public void setHashtag(List<String>tags){
         this.tags = tags;
     }
+
     public void setAuth(String auth){this.auth = auth;}
 }
