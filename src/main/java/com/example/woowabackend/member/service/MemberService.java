@@ -39,6 +39,7 @@ public class MemberService {
         memberRepository.save(new Member("qqq@naver.com", pw, "박도영",
                 new PhoneNumber("010-1234-1234"),
                 new Birth("1996-11-18")));
+
     }
 
     @Transactional
