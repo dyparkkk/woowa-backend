@@ -8,7 +8,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,8 +20,7 @@ import static javax.persistence.FetchType.*;
 @Getter
 public class Post extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
 
     private String title;
@@ -31,10 +29,12 @@ public class Post extends BaseTimeEntity {
     private String img;
     private String deleteYn;
 
+    @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
@@ -63,7 +63,7 @@ public class Post extends BaseTimeEntity {
     private List<PostTag> postTags = new ArrayList<>();
 
     @Builder
-    public Post(String title, String content, String auth, String img, Long likeCnt, Long viewCnt, Long commentCnt,String deleteYn){
+    public Post(String title, String content, String auth, String img, Long likeCnt, Long viewCnt, Long commentCnt,String deleteYn,Member member){
         this.title = title;
         this.content = content;
         this.auth = auth;
@@ -71,6 +71,7 @@ public class Post extends BaseTimeEntity {
         this.viewCnt = viewCnt;
         this.likeCnt = likeCnt;
         this.deleteYn = deleteYn;
+        this.member = member;
 
     }
 
@@ -88,21 +89,16 @@ public class Post extends BaseTimeEntity {
         this.viewCnt++;
     }
 
-   public void increaseLikeCnt(){
+    public void increaseLikeCnt(){
         this.likeCnt++;
    }
 
-   public void deleteLikeCnt(){
+    public void deleteLikeCnt(){
         this.likeCnt--;
     }
 
     public void delete(){
         this.deleteYn = "Y";
-    }
-
-    public void setPostAuth(Member member){
-        this.member = member;
-        member.getPost().add(this);
     }
 
     public boolean Tag(String tagName){

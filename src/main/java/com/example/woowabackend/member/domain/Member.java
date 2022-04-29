@@ -22,24 +22,23 @@ import static javax.persistence.FetchType.*;
 @Getter
 public class Member {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
     private String userId;
     private String pw;
-    private String name;
-    private String phoneNumber;
-    private String birth;
 
+    @Column(name = "user_name")
+    private String name;
+
+    private PhoneNumber phoneNumber;
+    private Birth birth;
     private String roles;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "school_id")
-    private School schoolCode;
-
-    private Boolean schoolCheck;
-    private Boolean alarmCheck;
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "school_id")
+//    private School schoolCode;
 
     @OneToMany(mappedBy = "member")
     private List<Post> post = new ArrayList<Post>();
@@ -47,16 +46,15 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Scrap> scraps = new ArrayList<>(); // 중복을 방지하기 위해서 Set 사용 고려
 
-    @OneToMany(mappedBy = "member")
-    private List<PostLike> postLikes = new ArrayList<>(); // 중복을 방지하기 위해서 Set 사용 고려
+//    @OneToMany(mappedBy = "member")
+//    private List<PostLike> postLikes = new ArrayList<>(); // 중복을 방지하기 위해서 Set 사용 고려
+//
+//    @OneToMany(mappedBy = "member")
+//    private List<CommentLike> commentLike = new ArrayList<>(); // 중복을 방지하기 위해서 Set 사용 고려
 
-    @OneToMany(mappedBy = "member")
-    private List<CommentLike> commentLike = new ArrayList<>(); // 중복을 방지하기 위해서 Set 사용 고려
-
-    // comment 양방향 필요 ?
 
     @Builder
-    public Member(String userId, String pw, String name, String phoneNumber,String birth) {
+    public Member(String userId, String pw, String name, PhoneNumber phoneNumber,Birth birth) {
         this.userId = userId;
         this.pw = pw;
         this.name = name;
@@ -70,13 +68,6 @@ public class Member {
             return Arrays.asList(roles.split(","));
         }
         return new ArrayList<>();
-    }
-
-    public static Member testCreate(String userId, String pw) {
-        return Member.builder()
-                .userId(userId)
-                .pw(pw)
-                .build();
     }
 
 }

@@ -34,8 +34,10 @@ public class PostService {
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
 
+    //post 저장
     @Transactional
-    public PostCreateResponseDto save(PostSaveRequestDto requestDto, List<String> tagName) {
+    public PostCreateResponseDto save(PostSaveRequestDto requestDto, List<String> tagName,Member member) {
+        requestDto.setMember(member);
         Post post = requestDto.toEntity();
         postRepository.save(post);
 
@@ -52,6 +54,8 @@ public class PostService {
         }
         return new PostCreateResponseDto();
     }
+
+    //post 수정
     @Transactional
     public PostUpdateResponseDto update (Long id, PostUpdateRequestDto requestDto){
         Post post = postRepository.findById(id).orElseThrow(() -> new
@@ -65,13 +69,6 @@ public class PostService {
         Post entity = postRepository.findById(id).orElseThrow(() -> new
                 IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
         return new PostResponseDto(entity);
-    }
-
-    @Transactional(readOnly = true)
-    public List<PostResponseDto> findAllDesc () {
-        return postRepository.findAllDesc().stream()
-                .map(PostResponseDto::new)
-                .collect(Collectors.toList());
     }
 
     //조회수
@@ -88,6 +85,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+    //post 삭제
     @Transactional
     public PostDeleteResponseDto delete(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new

@@ -1,6 +1,5 @@
 package com.example.woowabackend.member.controller;
 
-import com.example.woowabackend.member.domain.SessionConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

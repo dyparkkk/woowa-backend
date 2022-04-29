@@ -13,10 +13,6 @@ public class TagSaveDto {
 
     private String name;
 
-    @Builder
-    public TagSaveDto(String name){
-        this.name = name;
-    }
 
     public Tag toEntity() {
         return Tag.builder()

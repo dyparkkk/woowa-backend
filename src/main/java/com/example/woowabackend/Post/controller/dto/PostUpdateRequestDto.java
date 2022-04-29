@@ -10,10 +10,12 @@ public class PostUpdateRequestDto {
 
     private String title;
     private String content;
+    private String tags;
 
     @Builder
-    public PostUpdateRequestDto(String title, String content){
+    public PostUpdateRequestDto(String title, String content, String tags){
         this.title = title;
         this.content = content;
+        this.tags = tags;
     }
 }

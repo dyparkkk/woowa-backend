@@ -1,5 +1,7 @@
 package com.example.woowabackend.Post.controller.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
 @Getter
@@ -22,5 +24,19 @@ public class PostScrapResponseDto {
     }
     public void setData(String data) {
         this.data = data;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class ScrapAddResponseDto {
+        private final Boolean success = true;
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class ScrapRemoveResponseDto {
+        private final Boolean success = true;
+
     }
 }

@@ -38,6 +38,4 @@ public class PostController {
         model.addAttribute("post", dto);
         return "post/detail";
     }
-
-
 }

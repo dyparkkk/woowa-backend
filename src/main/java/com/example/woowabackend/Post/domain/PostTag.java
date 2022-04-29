@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 import javax.persistence.Entity;
 
@@ -16,7 +16,7 @@ import static javax.persistence.FetchType.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Setter
+@Getter
 public class PostTag {
 
     @Id
@@ -39,11 +39,6 @@ public class PostTag {
         this.post = post;
     }
 
-    public void TagSet(Tag tag){
-        PostTag postTag = new PostTag();
-        tag.getPostTags().add(this);
-        this.setTag(tag);
-    }
 
     public boolean match(String Name){
         return this.tag.getName().equals(Name);

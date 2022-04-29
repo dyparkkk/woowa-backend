@@ -4,7 +4,6 @@ import com.example.woowabackend.Post.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -58,7 +57,13 @@ public class PostResponseDto {
 
     @Data
     @AllArgsConstructor
-    public static class PostLikeDeleteResponseDto {
+    public static class PostsAddListResponseDto{
+        private final Boolean success = true;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class PostDeleteLikeResponseDto {
         private final Boolean success = true;
 
     }
