@@ -15,12 +15,13 @@ public class CommentApiController {
     @Autowired
     private CommentService commentService;
 
-    // 부모 댓글 작성
+    // 댓글 작성
     @PostMapping("/api/post/{postId}/comment")
     public SuccessResponseDto commentSave(@RequestBody CommentSaveDto commentSaveDto, @PathVariable Long postId){
         return commentService.create(commentSaveDto, postId);
     }
 
+    // 대댓글 작성
     @PostMapping("/api/post/{postId}/comment/{parentId}")
     public SuccessResponseDto childCommentSave(@RequestBody CommentSaveDto commentSaveDto, @PathVariable Long postId, @PathVariable Long parentId) {
         return commentService.childCreate(commentSaveDto, postId, parentId);
