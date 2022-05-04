@@ -3,6 +3,7 @@ package com.example.woowabackend.Post.domain;
 import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.util.domain.BaseTimeEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,18 +27,12 @@ public class Post extends BaseTimeEntity {
     private String title;
     private String content;
     private String auth;
-    private String img;
     private String deleteYn;
 
     @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @NotNull
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "board_id")
-    private Board board;
 
     @Column
     @NotNull
@@ -76,10 +71,6 @@ public class Post extends BaseTimeEntity {
 
     }
 
-    public Post imgUpload(String img){
-        this.img = img;
-        return this;
-    }
 
     public void update(String title, String content){
         this.title = title;
@@ -93,6 +84,7 @@ public class Post extends BaseTimeEntity {
     public void increaseLikeCnt(){
         this.likeCnt++;
    }
+
     public void deleteLikeCnt(){
         this.likeCnt--;
     }

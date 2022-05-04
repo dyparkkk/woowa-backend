@@ -1,5 +1,7 @@
 package com.example.woowabackend.member.service;
 
+import com.example.woowabackend.member.domain.Birth;
+import com.example.woowabackend.member.domain.PhoneNumber;
 import com.example.woowabackend.member.exception.DuplicateUserIdException;
 import com.example.woowabackend.member.exception.PwNotMatchException;
 import com.example.woowabackend.member.domain.Member;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.net.http.HttpRequest;
 
@@ -29,6 +32,16 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final MyUserDetailsService myUserDetailsService;
 
+    @PostConstruct
+    public void init() {
+        String pw = passwordEncoder.encode("asd123");
+
+        memberRepository.save(new Member("qqq@naver.com", pw, "박도영",
+                new PhoneNumber("010-1234-1234"),
+                new Birth("1996-11-18")));
+
+    }
+
     @Transactional
     public Long signUp(SignUpRequestDto dto){ // 회원가입
         // id 중복체크 ( 리펙토링 대상)
@@ -37,8 +50,9 @@ public class MemberService {
         String encodePw = passwordEncoder.encode(dto.getPw());
 
         // member 생성 후 저장
-        Member member = memberRepository.save(Member.testCreate(dto.getUserId(), encodePw));
-        return member.getId();
+        return memberRepository
+                .save(new Member(dto.getUserId(), encodePw, dto.getName(), dto.getHp(), dto.getBirth()))
+                .getId();
     }
 
     @Transactional
@@ -55,11 +69,11 @@ public class MemberService {
        return userDetails.getUsername();
     }
 
-    // 회원가입할 때 유저 중복 확인
-    private void validateDuplicateUser(String userId){
+    // 유저 중복 확인
+    public void validateDuplicateUser(String userId){
         memberRepository.findByUserId(userId)
                         .ifPresent(member -> {
-                            log.debug("userId : {}, 아이디 중복으로 회원가입 실패", userId);
+                            log.debug("userId : {}, 아이디 중복 발생", userId);
                             throw new DuplicateUserIdException("아이디 중복");
                         });
     }

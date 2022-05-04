@@ -1,5 +1,7 @@
 package com.example.woowabackend.member.controller.dto;
 
+import com.example.woowabackend.member.domain.Birth;
+import com.example.woowabackend.member.domain.PhoneNumber;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +23,10 @@ public class MemberDto {
         private String pw;
         @NotBlank
         private String name;
-        private String hp;
-        private String birth;
+
+        private PhoneNumber hp;
+
+        private Birth birth;
     }
 
     @Data
@@ -44,7 +48,16 @@ public class MemberDto {
 
     @Data
     @AllArgsConstructor
-    public static class LoginResponseDto{
+    public static class SuccessResponseDto{
         private final Boolean success = true;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UserIdCheckDto{
+        @Email
+        @NotBlank
+        private String userId;
     }
 }

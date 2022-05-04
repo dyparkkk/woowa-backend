@@ -15,11 +15,14 @@ import com.example.woowabackend.Post.service.PostService;
 import com.example.woowabackend.Post.controller.dto.PostSaveRequestDto;
 import com.example.woowabackend.Post.controller.dto.PostUpdateRequestDto;
 import com.example.woowabackend.Post.service.PostTagService;
+import com.example.woowabackend.comment.controller.dto.CommentListResponseDto;
+import com.example.woowabackend.comment.repository.CommentRepository;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import com.example.woowabackend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -36,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -46,7 +50,7 @@ public class PostApiController {
     private final PostService postService;
     private final MemberRepository memberRepository;
     private final PostTagRepository postTagRepository;
-
+    private final CommentRepository commentRepository;
 
     @PostMapping("/api/post")
     public PostCreateResponseDto postSave(@RequestBody PostSaveRequestDto requestDto,
@@ -57,7 +61,6 @@ public class PostApiController {
 
         PostResponseDto responseDto= new PostResponseDto();
         responseDto.setHashtag(tags);
-
 
         return postService.save(requestDto,tags,member);
 

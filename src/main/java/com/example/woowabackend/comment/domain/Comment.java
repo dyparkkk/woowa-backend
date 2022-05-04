@@ -3,6 +3,8 @@ package com.example.woowabackend.comment.domain;
 import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.util.domain.BaseTimeEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -34,13 +36,6 @@ public class Comment extends BaseTimeEntity {
     @Column
     private Long parentId;
 
-/*    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "parent_id")
-    private Comment parent;*/
-
-/*    @OneToMany(mappedBy = "parent")
-    private List<Comment> children = new ArrayList<>();*/
-
     @OneToMany(mappedBy = "comment")
     private List<CommentLike> likes;
 
@@ -53,6 +48,13 @@ public class Comment extends BaseTimeEntity {
         this.deleteYN = "Y";
     }
 
+    public void increaseLikeCnt() {
+        this.likeCnt++;
+    }
+
+    public void decreaseLikeCnt() {
+        this.likeCnt--;
+    }
     @Builder
     public Comment(String content, Member member, Post post, Long parentId){
         this.content = content;

@@ -1,43 +1,32 @@
 package com.example.woowabackend.comment.controller;
 
+import com.example.woowabackend.comment.controller.dto.CommentSaveDto.*;
 import com.example.woowabackend.comment.service.CommentLikeService;
 import com.example.woowabackend.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static com.example.woowabackend.member.controller.SessionConst.LOGIN_MEMBER;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 public class CommentLikeApiController {
     private final CommentLikeService commentLikeService;
-
-/*    @PostMapping("/api/comment/{commentId}/addLike")
-    public Long addLike(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long commentId){
-        boolean result;
-        String username = userDetails.getUsername();
-        result = commentLikeService.addLike(username,commentId);
-        return 200L;
-    }*/
-
+    
     @PostMapping("/api/comment/{commentId}/addLike")
-    public Long addLike(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long commentId){
-        boolean result;
-        String username = userDetails.getUsername();
-        result = commentLikeService.addLike(username,commentId);
-        return 200L;
+    public SuccessResponseDto addLike(@SessionAttribute(value = LOGIN_MEMBER, required = true) String userId,
+                                      @PathVariable Long commentId){
+        String username = userId;
+        return commentLikeService.addLike(username,commentId);
     }
 
     @DeleteMapping("/api/comment/{commentId}/deleteLike")
-    public Long deleteLike(@PathVariable Long commentId){
+    public SuccessResponseDto deleteLike(@PathVariable Long commentId){
         Member member = Member.builder().build();
-        boolean result;
-        result = commentLikeService.deleteLike(member,commentId);
-        return 200L;
+        return commentLikeService.deleteLike(member,commentId);
     }
 }
