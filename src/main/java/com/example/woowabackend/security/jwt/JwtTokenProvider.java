@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.*;
 
-@Component
 @Slf4j
 public class JwtTokenProvider implements InitializingBean {
 

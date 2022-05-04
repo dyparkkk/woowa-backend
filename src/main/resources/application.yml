@@ -7,8 +7,6 @@ spring:
     driver-class-name: org.h2.Driver
   main:
       allow-circular-references: true
-#    initialization-mode: always
-#    platform: h2
 
   h2.console:
     enabled: true
@@ -29,8 +27,8 @@ spring:
 
   output.ansi.enabled: always  # terminal color
 
-jwt:
-  secret-key: secret-key-lalala-lululu-fucking-error-WeakKeyException-not-secure-enough
-  token-validity-in-sec: 604800  # 일주일
-  refresh-token-validity-in-sec: 604800  # 일주일
+#jwt:
+#  secret-key: secret-key-lalala-lululu-fucking-error-WeakKeyException-not-secure-enough
+#  token-validity-in-sec: 604800  # 일주일
+#  refresh-token-validity-in-sec: 604800  # 일주일
 

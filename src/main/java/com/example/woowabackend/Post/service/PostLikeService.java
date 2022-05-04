@@ -46,7 +46,6 @@ public class PostLikeService {
                 .orElseThrow(() -> new  IllegalArgumentException("실패"));
         post.increaseLikeCnt();
         postRepository.save(post);
-
     }
 
     //좋아요 취소 카운트
@@ -55,7 +54,6 @@ public class PostLikeService {
                 .orElseThrow(() -> new  IllegalArgumentException("실패"));
         post.deleteLikeCnt();
         postRepository.save(post);
-
     }
 
 

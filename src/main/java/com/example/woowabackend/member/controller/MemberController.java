@@ -1,6 +1,5 @@
 package com.example.woowabackend.member.controller;
 
-import com.example.woowabackend.comment.controller.dto.CommentSaveDto;
 import com.example.woowabackend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
