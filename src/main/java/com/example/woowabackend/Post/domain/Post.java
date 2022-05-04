@@ -3,7 +3,6 @@ package com.example.woowabackend.Post.domain;
 import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.util.domain.BaseTimeEntity;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -62,7 +61,6 @@ public class Post extends BaseTimeEntity {
         this.title = title;
         this.content = content;
         this.auth = member.getName();
-        imgUpload(img);
         this.viewCnt =  0L;
         this.likeCnt = 0L;
         this.commentCnt = 0L;
