@@ -7,10 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static com.example.woowabackend.member.controller.SessionConst.LOGIN_MEMBER;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,9 +18,9 @@ public class CommentLikeApiController {
     private final CommentLikeService commentLikeService;
     
     @PostMapping("/api/comment/{commentId}/addLike")
-    public SuccessResponseDto addLike(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long commentId){
-        //String username = userDetails.getUsername();
-        String username = "test0429@naver.com";
+    public SuccessResponseDto addLike(@SessionAttribute(value = LOGIN_MEMBER, required = true) String userId,
+                                      @PathVariable Long commentId){
+        String username = userId;
         return commentLikeService.addLike(username,commentId);
     }
 

@@ -11,6 +11,7 @@ public class CommentSaveDto {
     private Long parentId;
     private Long commentId;
     private String content;
+    private Boolean check;
 
     @Data
     @NoArgsConstructor
@@ -18,9 +19,11 @@ public class CommentSaveDto {
         private final Boolean success = true;
     }
 
-    @Data
-    @NoArgsConstructor
-    public static class SuccessResponseDto {
+    public static class SuccessResponseDto(Boolean check) {
         private final Boolean success = true;
+    }
+
+    public void commentLikeCheckResponseDto(Boolean a) {
+        this.check = a;
     }
 }

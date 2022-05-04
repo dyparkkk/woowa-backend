@@ -14,11 +14,14 @@ import com.example.woowabackend.Post.service.PostService;
 import com.example.woowabackend.Post.controller.dto.PostSaveRequestDto;
 import com.example.woowabackend.Post.controller.dto.PostUpdateRequestDto;
 import com.example.woowabackend.Post.service.PostTagService;
+import com.example.woowabackend.comment.controller.dto.CommentListResponseDto;
+import com.example.woowabackend.comment.repository.CommentRepository;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import com.example.woowabackend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -40,11 +44,8 @@ public class PostApiController {
 
     private final PostService postService;
     private final MemberRepository memberRepository;
-    private final MemberService memberService;
-    private final PostTagService postTagService;
     private final PostTagRepository postTagRepository;
-    private final TagRepository tagRepository;
-    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
 
     private final FileSystemStorageService storageService;

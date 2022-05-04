@@ -2,6 +2,7 @@ package com.example.woowabackend.comment.service;
 
 import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.repository.PostRepository;
+import com.example.woowabackend.comment.controller.dto.CommentListResponseDto;
 import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.comment.controller.dto.CommentSaveDto;
 import com.example.woowabackend.comment.repository.CommentRepository;
@@ -9,8 +10,13 @@ import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.example.woowabackend.comment.controller.dto.CommentSaveDto.*;
 
@@ -25,8 +31,26 @@ public class CommentService {
     @Autowired
     private MemberRepository memberRepository;
 
+    // Comment 조회
+    @Transactional(readOnly = true)
+    public List<CommentListResponseDto> commentFindAll(Long postId, Pageable pageable) {
+/*        List<CommentListResponseDto> test = commentRepository.findByPostId(postId, pageable).stream()
+                .map(CommentListResponseDto::new)
+                .collect(Collectors.toList());
+        log.info(String.valueOf(test));*/
+
+/*        return commentRepository.findByPostId(postId, pageable).stream()
+                .filter(h -> h.getDeleteYN().equals("N"))
+                .map(CommentListResponseDto::new)
+                .collect(Collectors.toList());*/
+        return commentRepository.findByPostId(postId, pageable).stream()
+                .map(CommentListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+
     @Transactional
-    public SuccessResponseDto create(CommentSaveDto commentSaveDto, Long postId){
+    public SuccessResponseDto commentCreate(CommentSaveDto commentSaveDto, Long postId){
         Member member = memberRepository.findById(commentSaveDto.getMemberId()).orElseThrow(()->{
             return new IllegalArgumentException("User Id not found");
         });
@@ -49,7 +73,7 @@ public class CommentService {
     }
 
     @Transactional
-    public SuccessResponseDto childCreate(CommentSaveDto commentSaveDto, Long postId, Long parentId){
+    public SuccessResponseDto childCommentCreate(CommentSaveDto commentSaveDto, Long postId, Long parentId){
         Member member = memberRepository.findById(commentSaveDto.getMemberId()).orElseThrow(()->{
             return new IllegalArgumentException("UserId not found");
         });
@@ -70,7 +94,7 @@ public class CommentService {
     }
 
     @Transactional
-    public SuccessResponseDto delete(Long commentId){
+    public SuccessResponseDto commentDelete(Long commentId){
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new
                 IllegalArgumentException("Comment Not found."));
         comment.update();
