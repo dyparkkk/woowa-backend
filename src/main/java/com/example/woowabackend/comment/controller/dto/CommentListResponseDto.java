@@ -18,7 +18,7 @@ public class CommentListResponseDto {
     private String content;
     private LocalDateTime createDate;
     private String deleteYN;
-    private String deletedComment;
+    //private String deletedComment;
 
     public CommentListResponseDto(Comment comment) {
         this.id = comment.getId();
@@ -27,6 +27,6 @@ public class CommentListResponseDto {
         this.content = comment.getContent();
         this.createDate = comment.getCreatedDate();
         this.deleteYN = comment.getDeleteYN();
-        this.deletedComment = "삭제된 댓글입니다.";
+        //this.deletedComment = "삭제된 댓글입니다.";
     }
 }

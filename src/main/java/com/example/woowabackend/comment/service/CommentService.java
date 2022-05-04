@@ -94,11 +94,19 @@ public class CommentService {
     }
 
     @Transactional
-    public SuccessResponseDto commentDelete(Long commentId){
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new
+    public SuccessResponseDto commentDelete(String userId, CommentSaveDto commentSaveDto){
+        Comment comment = commentRepository.findById(commentSaveDto.getCommentId()).orElseThrow(() -> new
                 IllegalArgumentException("Comment Not found."));
+        if (userCheck(userId, comment.getMember().getId())){
+            log.info("aaa");
+        }
         comment.update();
         return new SuccessResponseDto();
+    }
+
+    //작성자가 작성한 댓글인지 확인
+    private boolean userCheck(String userId, Long comment){
+        return true;
     }
 
     @Transactional

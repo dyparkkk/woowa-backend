@@ -19,11 +19,7 @@ public class CommentSaveDto {
         private final Boolean success = true;
     }
 
-    public static class SuccessResponseDto(Boolean check) {
+    public static class SuccessResponseDto {
         private final Boolean success = true;
-    }
-
-    public void commentLikeCheckResponseDto(Boolean a) {
-        this.check = a;
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.example.woowabackend.comment.controller.dto.CommentSaveDto.*;
+import static com.example.woowabackend.member.controller.SessionConst.LOGIN_MEMBER;
 
 @RestController
 @Slf4j
@@ -41,7 +42,8 @@ public class CommentApiController {
 
     // 댓글 삭제 (디비에서 삭제 안하고 delYN으로 표기)
     @PutMapping("/api/comment/{postId}/comment")
-    public SuccessResponseDto commentDelete(@RequestBody CommentSaveDto commentSaveDto){
-        return commentService.commentDelete(commentSaveDto.getCommentId());
+    public SuccessResponseDto commentDelete(@SessionAttribute(value = LOGIN_MEMBER, required = true) String userId,
+                                            @RequestBody CommentSaveDto commentSaveDto){
+        return commentService.commentDelete(userId, commentSaveDto);
     }
 }
