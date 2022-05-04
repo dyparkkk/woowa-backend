@@ -2,9 +2,12 @@ package com.example.woowabackend.Post.repository;
 
 import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -19,4 +22,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT tag FROM Tag tag WHERE tag.name = ?1")
     Tag findTagByName(String name);
+
+    Page<Post> findAll(Pageable pageable);
+
+    Page<Post> findByTitleContaining(String searchKeyword, Pageable pageable);
 }

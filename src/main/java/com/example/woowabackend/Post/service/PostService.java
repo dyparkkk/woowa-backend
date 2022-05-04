@@ -17,6 +17,8 @@ import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +33,6 @@ public class PostService {
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
     private final CommentRepository commentRepository;
-    private final MemberRepository memberRepository;
 
     //post 저장
     @Transactional
@@ -68,6 +69,7 @@ public class PostService {
     public PostResponseDto findById (Long id){
         Post entity = postRepository.findById(id).orElseThrow(() -> new
                 IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+
         return new PostResponseDto(entity);
     }
 
@@ -101,7 +103,8 @@ public class PostService {
 
         post.delete();
 
-        List<Comment> comment = commentRepository.findByPostId(id);
+        Pageable pageable = null;
+        List<Comment> comment = commentRepository.findByPostId(id, pageable);
         for(int i=0; i<comment.size(); i++){
             comment.get(i).update();
         }
@@ -119,6 +122,14 @@ public class PostService {
 
     public List<Tag> findTags () {
         return postRepository.findTags();
+    }
+
+    public Page<Post> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable);
+    }
+
+    public Page<Post> postsSearchList(String searchKeyword, Pageable pageable) {
+        return postRepository.findByTitleContaining(searchKeyword, pageable);
     }
 }
 

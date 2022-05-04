@@ -5,6 +5,7 @@ import static com.example.woowabackend.member.controller.SessionConst.*;
 
 import com.example.woowabackend.Post.controller.dto.PostListResponseDto;
 import com.example.woowabackend.Post.controller.dto.PostResponseDto;
+import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.PostTag;
 import com.example.woowabackend.Post.repository.PostRepository;
 import com.example.woowabackend.Post.repository.PostTagRepository;
@@ -14,11 +15,18 @@ import com.example.woowabackend.Post.service.PostService;
 import com.example.woowabackend.Post.controller.dto.PostSaveRequestDto;
 import com.example.woowabackend.Post.controller.dto.PostUpdateRequestDto;
 import com.example.woowabackend.Post.service.PostTagService;
+import com.example.woowabackend.comment.controller.dto.CommentListResponseDto;
+import com.example.woowabackend.comment.repository.CommentRepository;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import com.example.woowabackend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -40,14 +49,8 @@ public class PostApiController {
 
     private final PostService postService;
     private final MemberRepository memberRepository;
-    private final MemberService memberService;
-    private final PostTagService postTagService;
     private final PostTagRepository postTagRepository;
-    private final TagRepository tagRepository;
-    private final PostRepository postRepository;
-
-
-    private final FileSystemStorageService storageService;
+    private final CommentRepository commentRepository;
 
     @PostMapping("/api/post")
     public PostCreateResponseDto postSave(@RequestBody PostSaveRequestDto requestDto,
@@ -60,6 +63,7 @@ public class PostApiController {
         responseDto.setHashtag(tags);
 
         return postService.save(requestDto,tags,member);
+
     }
 
     @PutMapping("/api/post/{id}")
@@ -79,9 +83,26 @@ public class PostApiController {
     }
 
     @GetMapping("/api/post/index")
-    public List<PostListResponseDto> index(Model model, @SessionAttribute(value = LOGIN_MEMBER, required = true) String userId) {
-       model.addAttribute("post",postService.findAllDesc());
-        model.addAttribute("member",memberRepository.findByUserId(userId));
+    public List<PostListResponseDto> index(Model model, @SessionAttribute(value = LOGIN_MEMBER, required = true) String userId,
+                                           @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,String searchKeyword) {
+        Page<Post> list = null;
+
+        if (searchKeyword == null) {
+            list = postService.findAll(pageable);
+        } else {
+            list = postService.postsSearchList(searchKeyword, pageable);
+        }
+
+        int nowPage = list.getPageable().getPageNumber() + 1;
+        int startPage = Math.max(nowPage - 4, 1);
+        int endPage = Math.min(nowPage + 5, list.getTotalPages());
+
+//        model.addAttribute("post", list);
+//        model.addAttribute("nowPage", nowPage);
+//        model.addAttribute("startPage", startPage);
+//        model.addAttribute("endPage", endPage);
+//        //model.addAttribute("post",postService.findAllDesc());
+//        model.addAttribute("member",memberRepository.findByUserId(userId));
         return postService.findAllDesc();
     }
 

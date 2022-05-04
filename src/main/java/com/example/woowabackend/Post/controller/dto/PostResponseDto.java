@@ -2,12 +2,15 @@ package com.example.woowabackend.Post.controller.dto;
 
 import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.PostTag;
+import com.example.woowabackend.comment.controller.dto.CommentListResponseDto;
+import com.example.woowabackend.comment.domain.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -44,6 +47,13 @@ public class PostResponseDto {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CommentResponseDto{
+        List<Comment> comments = getComments();
+    }
+
+    @Data
+    @AllArgsConstructor
     public static class PostCreateResponseDto {
         private final Boolean success = true;
 
@@ -67,6 +77,8 @@ public class PostResponseDto {
     @AllArgsConstructor
     public static class PostsAddListResponseDto{
         private final Boolean success = true;
+
+
     }
 
     @Data
