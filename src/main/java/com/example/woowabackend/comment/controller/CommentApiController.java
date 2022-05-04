@@ -32,4 +32,5 @@ public class CommentApiController {
     public SuccessResponseDto commentDelete(@RequestBody CommentSaveDto commentSaveDto){
         return commentService.delete(commentSaveDto.getCommentId());
     }
+
 }
