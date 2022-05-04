@@ -8,8 +8,11 @@ import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import static com.example.woowabackend.Post.controller.dto.PostResponseDto.*;
+import static com.example.woowabackend.member.controller.SessionConst.LOGIN_MEMBER;
 
 @RequiredArgsConstructor
 @Service
@@ -24,10 +27,14 @@ public class PostLikeService {
         Post post = postRepository.findById(postId).orElseThrow();
         Member member = memberRepository.findById(memberId).orElseThrow();
 
+
         //중복방지
         if(isNotAlreadyLike(memberId,postId)){
+            count(postId);
             postLikeRepository.save(new PostLike(post,member));
         }
+        else{ throw new RuntimeException("이미 좋아요를 눌렀습니다");}
+
         return new PostsAddListResponseDto();
     }
 
@@ -40,13 +47,24 @@ public class PostLikeService {
         return new PostDeleteLikeResponseDto();
     }
 
+    public void checkLike(Long memberId, Long postId){
+
+        Post post = postRepository.findById(postId).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        if(isNotAlreadyLike(memberId,postId)){
+
+            postLikeRepository.save(new PostLike(post,member));
+        }
+
+
+    }
+
     //좋아요 수 카운트
     public void count(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new  IllegalArgumentException("실패"));
         post.increaseLikeCnt();
         postRepository.save(post);
-
     }
 
     //좋아요 취소 카운트
