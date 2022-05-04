@@ -33,7 +33,6 @@ public class PostService {
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
     private final CommentRepository commentRepository;
-    private final MemberRepository memberRepository;
 
     //post 저장
     @Transactional
@@ -123,6 +122,14 @@ public class PostService {
 
     public List<Tag> findTags () {
         return postRepository.findTags();
+    }
+
+    public Page<Post> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable);
+    }
+
+    public Page<Post> postsSearchList(String searchKeyword, Pageable pageable) {
+        return postRepository.findByTitleContaining(searchKeyword, pageable);
     }
 }
 

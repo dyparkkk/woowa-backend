@@ -61,7 +61,8 @@ public class Post extends BaseTimeEntity {
     public Post(String title, String content, String auth, String img, Long likeCnt, Long viewCnt, Long commentCnt,String deleteYn,Member member){
         this.title = title;
         this.content = content;
-        this.auth = auth;
+        this.auth = member.getName();
+        imgUpload(img);
         this.viewCnt =  0L;
         this.likeCnt = 0L;
         this.commentCnt = 0L;
