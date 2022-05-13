@@ -107,8 +107,6 @@ public class PostApiController {
         int startPage = Math.max(Page - 4, 1);
         int endPage = Math.min(Page + 5, list.getTotalPages());
 
-
-
         return postService.findAllDesc();
     }
 

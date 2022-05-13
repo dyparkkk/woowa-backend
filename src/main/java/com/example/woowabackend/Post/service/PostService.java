@@ -12,6 +12,7 @@ import com.example.woowabackend.Post.repository.TagRepository;
 import static com.example.woowabackend.Post.controller.dto.PostResponseDto.*;
 import com.example.woowabackend.Post.controller.dto.PostSaveRequestDto;
 import com.example.woowabackend.Post.controller.dto.PostUpdateRequestDto;
+import com.example.woowabackend.comment.controller.dto.CommentListResponseDto;
 import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.comment.repository.CommentRepository;
 import com.example.woowabackend.member.domain.Member;
@@ -112,9 +113,10 @@ public class PostService {
         post.delete();
 
         Pageable pageable = null;
-        List<Comment> comment = commentRepository.findByPostId(id, pageable);
-        for(int i=0; i<comment.size(); i++){
-            comment.get(i).update();
+        Page<Comment> comment = commentRepository.findByPostId(id, pageable);
+        List<Comment> listComment = comment.getContent();
+        for(int i=0; i<comment.getTotalElements(); i++){
+            listComment.get(i).update();
         }
         return new PostDeleteResponseDto();
     }

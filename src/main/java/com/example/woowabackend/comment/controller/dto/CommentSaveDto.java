@@ -19,6 +19,8 @@ public class CommentSaveDto {
         private final Boolean success = true;
     }
 
+    @Data
+    @NoArgsConstructor
     public static class SuccessResponseDto {
         private final Boolean success = true;
     }
