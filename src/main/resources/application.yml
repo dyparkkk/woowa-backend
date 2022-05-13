@@ -1,7 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:~/test   # 개발용
-#    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1             # 개발 서버용
+    url: jdbc:h2:tcp://localhost/~/test  # 개발용
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -15,9 +14,8 @@ spring:
       web-allow-others: true
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect    # H2Dialect, MySQL57Dialect
+    database-platform: org.hibernate.dialect.H2Dialect   # H2Dialect, MySQL57Dialect
     hibernate:
-
       ddl-auto: update
     properties:
       hibernate:

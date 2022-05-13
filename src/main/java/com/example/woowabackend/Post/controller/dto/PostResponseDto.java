@@ -77,8 +77,6 @@ public class PostResponseDto {
     @AllArgsConstructor
     public static class PostsAddListResponseDto{
         private final Boolean success = true;
-
-
     }
 
     @Data
