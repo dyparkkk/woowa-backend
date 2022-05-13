@@ -32,6 +32,7 @@ public class Member {
     @Column(name = "user_name")
     private String name;
 
+
     private PhoneNumber phoneNumber;
     private Birth birth;
     private String roles;
