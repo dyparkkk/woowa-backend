@@ -24,20 +24,23 @@ public class CommentApiController {
 
     // 댓글 조회
     @GetMapping("/api/comment/{postId}")
-    public List<CommentListResponseDto> commentList(@PathVariable Long postId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public List<CommentListResponseDto> commentList(
+            @PathVariable Long postId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return commentService.commentFindAll(postId, pageable);
     }
 
     // 댓글 작성
     @PostMapping("/api/comment/{postId}/comment")
-    public SuccessResponseDto commentSave(@RequestBody CommentSaveDto commentSaveDto, @PathVariable Long postId){
-        return commentService.commentCreate(commentSaveDto, postId);
+    public SuccessResponseDto commentSave(@SessionAttribute(value = LOGIN_MEMBER, required = true) String userId,
+            @RequestBody CommentSaveDto commentSaveDto, @PathVariable Long postId){
+        return commentService.commentCreate(userId, commentSaveDto, postId);
     }
 
     // 대댓글 작성
     @PostMapping("/api/comment/{postId}/comment/{parentId}")
-    public SuccessResponseDto childCommentSave(@RequestBody CommentSaveDto commentSaveDto, @PathVariable Long postId, @PathVariable Long parentId) {
-        return commentService.childCommentCreate(commentSaveDto, postId, parentId);
+    public SuccessResponseDto childCommentSave(@SessionAttribute(value = LOGIN_MEMBER, required = true) String userId,
+            @RequestBody CommentSaveDto commentSaveDto, @PathVariable Long postId, @PathVariable Long parentId) {
+        return commentService.childCommentCreate(userId, commentSaveDto, postId, parentId);
     }
 
     // 댓글 삭제 (디비에서 삭제 안하고 delYN으로 표기)
@@ -46,4 +49,5 @@ public class CommentApiController {
                                             @RequestBody CommentSaveDto commentSaveDto){
         return commentService.commentDelete(userId, commentSaveDto);
     }
+
 }

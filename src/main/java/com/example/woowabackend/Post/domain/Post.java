@@ -1,5 +1,6 @@
 package com.example.woowabackend.Post.domain;
 
+import com.example.woowabackend.Post.repository.PostLikeRepository;
 import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.util.domain.BaseTimeEntity;
@@ -98,4 +99,13 @@ public class Post extends BaseTimeEntity {
         }
         return false;
     }
+
+    public boolean likeCheck(String userId){
+        for(PostLike postLike : postLikes) {
+            if (postLike.getMember().getId().equals(userId));
+                return true;
+        }
+        return false;
+    }
+
 }

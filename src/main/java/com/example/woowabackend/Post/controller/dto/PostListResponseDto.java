@@ -1,6 +1,7 @@
 package com.example.woowabackend.Post.controller.dto;
 
 import com.example.woowabackend.Post.domain.Post;
+import com.example.woowabackend.comment.domain.Comment;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,8 @@ public class PostListResponseDto {
     private Long likeCnt;
     private Long viewCnt;
     private Long commentCnt;
+    private boolean likeCheck;
+
 
     public PostListResponseDto(Post entity) {
         this.id = entity.getId();
@@ -25,7 +28,7 @@ public class PostListResponseDto {
         this.likeCnt = entity.getLikeCnt();
         this.viewCnt = entity.getViewCnt();
         this.commentCnt = entity.getCommentCnt();
+        this.likeCheck = entity.likeCheck(getAuth());
     }
-
 
 }

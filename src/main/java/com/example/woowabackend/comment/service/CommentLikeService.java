@@ -40,9 +40,9 @@ public class CommentLikeService {
         return commentLikeRepository.findByMemberAndComment(member, comment).isEmpty();
     }
 
-    public SuccessResponseDto deleteLike(Member member, Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("Like Cancel Fail"));
-        CommentLike commentLike = commentLikeRepository.findByCommentId(commentId).orElseThrow(() -> new IllegalArgumentException("Like Cancel Fail"));
+    public SuccessResponseDto deleteLike(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("commentId Not Found"));
+        CommentLike commentLike = commentLikeRepository.findByCommentId(commentId).orElseThrow(() -> new IllegalArgumentException("commentId Not Found for commentLike"));
         commentLikeRepository.delete(commentLike);
 
         comment.decreaseLikeCnt();

@@ -20,13 +20,11 @@ public class CommentLikeApiController {
     @PostMapping("/api/comment/{commentId}/addLike")
     public SuccessResponseDto addLike(@SessionAttribute(value = LOGIN_MEMBER, required = true) String userId,
                                       @PathVariable Long commentId){
-        String username = userId;
-        return commentLikeService.addLike(username,commentId);
+        return commentLikeService.addLike(userId, commentId);
     }
 
     @DeleteMapping("/api/comment/{commentId}/deleteLike")
     public SuccessResponseDto deleteLike(@PathVariable Long commentId){
-        Member member = Member.builder().build();
-        return commentLikeService.deleteLike(member,commentId);
+        return commentLikeService.deleteLike(commentId);
     }
 }
