@@ -20,8 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtTokenProvider jwtTokenProvider;
-
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
@@ -40,19 +38,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoringAntMatchers("/h2-console/**")
                 .disable();
 
-        //session 사용 안함
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-
         http.authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/**").permitAll()
-                .antMatchers("/auth/**").authenticated()
-                .antMatchers("/scrap/**").authenticated()
                 .anyRequest().permitAll();
-
-        http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
-
     }
 
     @Bean

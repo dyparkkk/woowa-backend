@@ -11,7 +11,9 @@ public class PostListResponseDto {
     private Long id;
     private String title;
     private String auth;
+    private String content;
     private LocalDateTime modifiedDate;
+    private Long likeCnt;
     private Long viewCnt;
     private Long commentCnt;
 
@@ -19,7 +21,9 @@ public class PostListResponseDto {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.auth = entity.getAuth();
+        this.content = entity.getContent();
         this.modifiedDate = entity.getModifiedDate();
+        this.likeCnt = entity.getLikeCnt();
         this.viewCnt = entity.getViewCnt();
         this.commentCnt = entity.getCommentCnt();
     }
