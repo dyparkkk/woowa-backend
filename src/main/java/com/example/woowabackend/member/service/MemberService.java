@@ -32,7 +32,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final MyUserDetailsService myUserDetailsService;
 
-    @PostConstruct
+/*    @PostConstruct
     public void init() {
         String pw = passwordEncoder.encode("asd123");
 
@@ -40,7 +40,7 @@ public class MemberService {
                 new PhoneNumber("010-1234-1234"),
                 new Birth("1996-11-18")));
 
-    }
+    }*/
 
     @Transactional
     public Long signUp(SignUpRequestDto dto){ // 회원가입

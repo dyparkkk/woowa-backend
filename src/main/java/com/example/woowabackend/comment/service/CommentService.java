@@ -10,6 +10,7 @@ import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,15 +44,19 @@ public class CommentService {
                 .filter(h -> h.getDeleteYN().equals("N"))
                 .map(CommentListResponseDto::new)
                 .collect(Collectors.toList());*/
+
+        Page<Comment> page = commentRepository.findByPostId(postId, pageable);
         return commentRepository.findByPostId(postId, pageable).stream()
-                .map(CommentListResponseDto::new)
+                .map(n -> new CommentListResponseDto(n, page))
+                //.map(CommentListResponseDto::new)
                 .collect(Collectors.toList());
     }
 
 
     @Transactional
-    public SuccessResponseDto commentCreate(CommentSaveDto commentSaveDto, Long postId){
-        Member member = memberRepository.findById(commentSaveDto.getMemberId()).orElseThrow(()->{
+    public SuccessResponseDto commentCreate(String userId, CommentSaveDto commentSaveDto, Long postId){
+
+        Member member = memberRepository.findByUserId(userId).orElseThrow(()->{
             return new IllegalArgumentException("User Id not found");
         });
 
@@ -73,9 +78,10 @@ public class CommentService {
     }
 
     @Transactional
-    public SuccessResponseDto childCommentCreate(CommentSaveDto commentSaveDto, Long postId, Long parentId){
-        Member member = memberRepository.findById(commentSaveDto.getMemberId()).orElseThrow(()->{
-            return new IllegalArgumentException("UserId not found");
+    public SuccessResponseDto childCommentCreate(String userId, CommentSaveDto commentSaveDto, Long postId, Long parentId){
+
+        Member member = memberRepository.findByUserId(userId).orElseThrow(()->{
+            return new IllegalArgumentException("User Id not found");
         });
 
         Post post = postRepository.findById(postId).orElseThrow(()->{

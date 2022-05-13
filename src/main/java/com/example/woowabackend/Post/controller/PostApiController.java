@@ -81,8 +81,6 @@ public class PostApiController {
 
     @GetMapping("/api/post/index")
     public List<PostListResponseDto> index(Model model, @SessionAttribute(value = LOGIN_MEMBER, required = true) String userId) {
-       model.addAttribute("post",postService.findAllDesc());
-        model.addAttribute("member",memberRepository.findByUserId(userId));
         return postService.findAllDesc();
     }
 

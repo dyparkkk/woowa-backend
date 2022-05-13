@@ -1,6 +1,7 @@
 package com.example.woowabackend.Post.controller.dto;
 
 import com.example.woowabackend.Post.domain.Post;
+import com.example.woowabackend.comment.domain.Comment;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
