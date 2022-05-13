@@ -2,6 +2,7 @@ package com.example.woowabackend.Post.service;
 
 import com.example.woowabackend.Post.controller.dto.PostResponseDto;
 import com.example.woowabackend.Post.controller.dto.PostListResponseDto;
+import com.example.woowabackend.Post.domain.Board;
 import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.PostTag;
 import com.example.woowabackend.Post.domain.Tag;
@@ -15,15 +16,20 @@ import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.comment.repository.CommentRepository;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
+import com.example.woowabackend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -34,6 +40,7 @@ public class PostService {
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
     private final CommentRepository commentRepository;
+    private final PostLikeService postLikeService;
 
     //post 저장
     @Transactional
@@ -132,5 +139,11 @@ public class PostService {
     public Page<Post> postsSearchList(String searchKeyword, Pageable pageable) {
         return postRepository.findByTitleContaining(searchKeyword, pageable);
     }
+
+    public List<Post> selectPostLimitOffset(@Param("limit") int limit, @Param("offset") int offset) {
+        return null;
+    }
+
+
 }
 

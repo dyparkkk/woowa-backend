@@ -1,5 +1,7 @@
 package com.example.woowabackend.Post.service;
 
+import com.example.woowabackend.Post.controller.dto.PostListResponseDto;
+import com.example.woowabackend.Post.controller.dto.PostResponseDto;
 import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.PostLike;
 import com.example.woowabackend.Post.repository.PostLikeRepository;
@@ -8,11 +10,11 @@ import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 import static com.example.woowabackend.Post.controller.dto.PostResponseDto.*;
-import static com.example.woowabackend.member.controller.SessionConst.LOGIN_MEMBER;
 
 @RequiredArgsConstructor
 @Service
@@ -47,17 +49,6 @@ public class PostLikeService {
         return new PostDeleteLikeResponseDto();
     }
 
-    public void checkLike(Long memberId, Long postId){
-
-        Post post = postRepository.findById(postId).orElseThrow();
-        Member member = memberRepository.findById(memberId).orElseThrow();
-        if(isNotAlreadyLike(memberId,postId)){
-
-            postLikeRepository.save(new PostLike(post,member));
-        }
-
-
-    }
 
     //좋아요 수 카운트
     public void count(Long id) {
@@ -81,4 +72,13 @@ public class PostLikeService {
         return postLikeRepository.findByMemberIdAndPostId(memberId,postId).isEmpty();
     }
 
+    @Transactional
+    public boolean findLike (Long postId, Long memberId){
+       Optional<PostLike> postLike = postLikeRepository.findByMemberIdAndPostId(memberId,postId);
+       if(postLike.isEmpty()){
+           return true;
+       }else {
+           return false;
+       }
+    }
 }

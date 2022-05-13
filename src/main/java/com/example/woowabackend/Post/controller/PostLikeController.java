@@ -1,5 +1,6 @@
 package com.example.woowabackend.Post.controller;
 
+import com.example.woowabackend.Post.controller.dto.PostListResponseDto;
 import com.example.woowabackend.Post.repository.PostLikeRepository;
 import com.example.woowabackend.Post.service.PostLikeService;
 import static com.example.woowabackend.Post.controller.dto.PostResponseDto.*;
@@ -39,7 +40,7 @@ public class PostLikeController {
 
     @PostMapping("/like/{id}")
     public PostsAddListResponseDto addLike(@PathVariable("id") Long id,
-                                           @SessionAttribute(value = LOGIN_MEMBER, required = true) String userId) {
+                                       @SessionAttribute(value = LOGIN_MEMBER, required = true) String userId) {
         Member member = memberRepository.findByUserId(userId).orElseThrow();
         Long memberId = member.getId();
 
