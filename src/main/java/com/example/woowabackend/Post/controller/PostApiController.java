@@ -103,6 +103,7 @@ public class PostApiController {
 //        model.addAttribute("endPage", endPage);
 //        //model.addAttribute("post",postService.findAllDesc());
 //        model.addAttribute("member",memberRepository.findByUserId(userId));
+
         return postService.findAllDesc();
     }
 
