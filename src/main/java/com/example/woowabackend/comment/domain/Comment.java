@@ -1,6 +1,7 @@
 package com.example.woowabackend.comment.domain;
 
 import com.example.woowabackend.Post.domain.Post;
+import com.example.woowabackend.Post.domain.PostLike;
 import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.util.domain.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -55,6 +56,15 @@ public class Comment extends BaseTimeEntity {
     public void decreaseLikeCnt() {
         this.likeCnt--;
     }
+
+    public boolean likeCheck(String userId){
+        for(CommentLike commentLike : likes) {
+            if (commentLike.getMember().getId().equals(userId));
+            return true;
+        }
+        return false;
+    }
+
     @Builder
     public Comment(String content, Member member, Post post, Long parentId){
         this.content = content;

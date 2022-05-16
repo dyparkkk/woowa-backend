@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> {
-    // Member merge 이후 사용
     Optional<CommentLike> findByMemberAndComment(Member member, Comment comment);
 
     Optional<CommentLike> findByCommentId (Long commentId);
