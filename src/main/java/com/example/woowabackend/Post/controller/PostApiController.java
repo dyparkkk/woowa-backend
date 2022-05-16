@@ -4,6 +4,7 @@ import static com.example.woowabackend.Post.controller.dto.PostResponseDto.*;
 import static com.example.woowabackend.member.controller.SessionConst.*;
 
 import com.example.woowabackend.Post.controller.dto.PostListResponseDto;
+import com.example.woowabackend.Post.controller.dto.PostPageDto;
 import com.example.woowabackend.Post.controller.dto.PostResponseDto;
 import com.example.woowabackend.Post.domain.Board;
 import com.example.woowabackend.Post.domain.Post;
@@ -91,7 +92,7 @@ public class PostApiController {
     }
 
     @GetMapping("/api/post/index")
-    public List<PostListResponseDto> index(@SessionAttribute(value = LOGIN_MEMBER, required = true) String userId,
+    public PostPageDto index(@SessionAttribute(value = LOGIN_MEMBER, required = true) String userId,
                                            @PageableDefault(page =0, size = 5, sort = "id", direction = Sort.Direction.DESC)
                                                    Pageable pageable,String searchKeyword) {
 
@@ -107,7 +108,7 @@ public class PostApiController {
         int startPage = Math.max(Page - 4, 1);
         int endPage = Math.min(Page + 5, list.getTotalPages());
 
-        return postService.findAllDesc();
+        return PostPageDto.of(postService.findAll(pageable));
     }
 
 

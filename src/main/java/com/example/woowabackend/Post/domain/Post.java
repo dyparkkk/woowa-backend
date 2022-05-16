@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -92,6 +93,7 @@ public class Post extends BaseTimeEntity {
         this.deleteYn = "Y";
     }
 
+
     public boolean Tag(String tagName){
         for(PostTag postTag : postTags){
             if(postTag.getTag().getName().equals(tagName));
@@ -100,6 +102,7 @@ public class Post extends BaseTimeEntity {
         return false;
     }
 
+    //좋아요 사용자 세션 확인 N:1 조회문제...좀 더 고민
     public boolean likeCheck(String userId){
         for(PostLike postLike : postLikes) {
             if (postLike.getMember().getId().equals(userId));

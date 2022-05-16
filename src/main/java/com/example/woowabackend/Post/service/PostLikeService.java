@@ -1,7 +1,5 @@
 package com.example.woowabackend.Post.service;
 
-import com.example.woowabackend.Post.controller.dto.PostListResponseDto;
-import com.example.woowabackend.Post.controller.dto.PostResponseDto;
 import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.domain.PostLike;
 import com.example.woowabackend.Post.repository.PostLikeRepository;
