@@ -3,6 +3,7 @@ package com.example.woowabackend.Post.controller.dto;
 import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.comment.domain.Comment;
 import lombok.Getter;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +20,7 @@ public class PostListResponseDto {
     private boolean likeCheck;
 
 
-    public PostListResponseDto(Post entity) {
+    public PostListResponseDto(Post entity, Page<Post> page) {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.auth = entity.getAuth();
