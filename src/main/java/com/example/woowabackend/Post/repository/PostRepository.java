@@ -25,10 +25,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT tag FROM Tag tag WHERE tag.name = ?1")
     Tag findTagByName(String name);
 
-    @Query("select p FROM Post p order by p.id desc")
     Page<Post> findAll(Pageable pageable);
 
     Page<Post> findByTitleContaining(String searchKeyword, Pageable pageable);
+
+    //Page<Post> findByPostId(Long postId, Pageable pageable);
 
 
 }
