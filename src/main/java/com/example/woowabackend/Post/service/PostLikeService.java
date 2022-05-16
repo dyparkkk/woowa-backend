@@ -35,7 +35,9 @@ public class PostLikeService {
             count(postId);
             postLikeRepository.save(new PostLike(post,member));
         }
-        else{ throw new RuntimeException("이미 좋아요를 눌렀습니다");}
+        else {
+            throw new RuntimeException("이미 좋아요를 눌렀습니다");
+        }
 
         return new PostsAddListResponseDto();
     }

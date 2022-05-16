@@ -9,6 +9,8 @@ import com.example.woowabackend.member.domain.Member;
 import com.example.woowabackend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +23,7 @@ public class CommentLikeService {
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
 
-    public SuccessResponseDto addLike(String username, Long commentId) {
+    public ResponseEntity addLike(String username, Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow();
         Member member = memberRepository.findByUserId(username).orElseThrow();
 
@@ -29,11 +31,9 @@ public class CommentLikeService {
         if(isNotAlreadyLike(member, comment)){
             commentLikeRepository.save(new CommentLike(member, comment));
             comment.increaseLikeCnt();
-            log.info("Success");
-            return new SuccessResponseDto();
+            return new ResponseEntity(HttpStatus.OK.value(), HttpStatus.OK);
         }
-        log.info("false");
-        return new SuccessResponseDto();
+        return new ResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST);
     }
     //사용자가 이미 좋아요 한 댓글인지 체크
     private boolean isNotAlreadyLike(Member member, Comment comment){

@@ -87,6 +87,13 @@ public class Post extends BaseTimeEntity {
     public void deleteLikeCnt(){
         this.likeCnt--;
     }
+    public void increaseCommentCnt(){
+        this.commentCnt++;
+    }
+
+    public void deleteCommentCnt(){
+        this.commentCnt--;
+    }
 
     public void delete(){
         this.deleteYn = "Y";
