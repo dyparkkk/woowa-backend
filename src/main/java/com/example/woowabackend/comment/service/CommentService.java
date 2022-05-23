@@ -2,6 +2,7 @@ package com.example.woowabackend.comment.service;
 
 import com.example.woowabackend.Post.domain.Post;
 import com.example.woowabackend.Post.repository.PostRepository;
+import com.example.woowabackend.comment.controller.dto.ChildListResponseDto;
 import com.example.woowabackend.comment.controller.dto.CommentListResponseDto;
 import com.example.woowabackend.comment.domain.Comment;
 import com.example.woowabackend.comment.controller.dto.CommentSaveDto;
@@ -19,10 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-
-import static com.example.woowabackend.comment.controller.dto.CommentSaveDto.*;
 
 @Slf4j
 @Service
@@ -39,12 +37,21 @@ public class CommentService {
     @Transactional(readOnly = true)
     public ResponseEntity<CommentResponse> commentFindAll(Long postId, Pageable pageable) {
 
+        long parentId = 0;
+
         Page<Comment> page = commentRepository.findByPostId(postId, pageable);
 
-        List<CommentListResponseDto> commentList = commentRepository.findByPostId(postId, pageable).stream()
-                .map(CommentListResponseDto::new)
+        // 대댓글만 조회
+        List<ChildListResponseDto> childCommentList = commentRepository.findByPostId(postId).stream()
+                .filter(p -> p.getParentId() != 0)
+                .map(ChildListResponseDto::new)
                 .collect(Collectors.toList());
-        
+
+        // 댓글(부모 댓글)만 조회
+        List<CommentListResponseDto> commentList = commentRepository.findByPostIdAndParentId(postId, parentId, pageable).stream()
+                .map(n -> new CommentListResponseDto(n, childCommentList))
+                .collect(Collectors.toList());
+
         CommentResponse commentResponse = CommentResponse.builder()
                 .code(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
@@ -55,7 +62,6 @@ public class CommentService {
 
         return new ResponseEntity<>(commentResponse, HttpStatus.OK);
     }
-
 
     // 댓글 작성
     @Transactional
@@ -107,6 +113,21 @@ public class CommentService {
 
         commentRepository.save(comment);
         return new ResponseEntity(HttpStatus.OK.value(), HttpStatus.OK);
+    }
+
+    // 댓글 수정
+    @Transactional
+    public ResponseEntity commentUpdate(String userId, CommentSaveDto commentSaveDto){
+
+        Comment comment = commentRepository.findById(commentSaveDto.getCommentId()).orElseThrow(() -> new
+                IllegalArgumentException("Comment Not found."));
+
+        if (userCheck(userId, comment.getMember().getUserId())) {
+            comment.update(commentSaveDto.getContent());
+            return new ResponseEntity(HttpStatus.OK.value(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity("you are not writer", HttpStatus.BAD_REQUEST);
     }
 
     // 댓글 삭제
