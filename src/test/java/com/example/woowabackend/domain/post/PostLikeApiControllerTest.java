@@ -32,50 +32,50 @@ public class PostLikeApiControllerTest {
     @Autowired
     PostRepository postRepository;
 
-    protected Post addPost() {
-        Post post = Post.builder()
-                .title("Test title")
-                .content("Test content")
-                .auth("auth")
-                .build();
-
-        Post save = postRepository.save(post);
-
-        return save;
-    }
-    @DisplayName("좋아요 테스트")
-    @Test
-    void testCreateLike() throws Exception {
-        Post post = addPost();
-
-        mockMvc.perform(post("/like/"+post.getId()))
-                .andExpect(status().isOk());
-
-//        PostLike postlike = postLikeRepository.findAll().get(0);
+//    protected Post addPost() {
+//        Post post = Post.builder()
+//                .title("Test title")
+//                .content("Test content")
+//                .auth("auth")
+//                .build();
 //
-//        assertNotNull(postlike);
-//        assertNotNull(postlike.getMember().getId());
-//        assertNotNull(postlike.getPost().getId());
-    }
-
-
-    @DisplayName("좋아요 중복 테스트")
-    @Test
-    void testDuplicateLike() throws Exception {
-        Post post  = addPost();
-
-        mockMvc.perform(post("/like/"+post.getId()))
-                .andExpect(status().isOk());
-
-//        mockMvc.perform(post("/like/"+post.getId()))
-//                .andExpect(status().isBadRequest());
-
-//        PostLike postlike = postLikeRepository.findAll().get(0);
+//        Post save = postRepository.save(post);
 //
-//        assertNotNull(postlike);
-//        assertNotNull(postlike.getMember().getId());
-//        assertNotNull(postlike.getPost().getId());
-    }
+//        return save;
+//    }
+//    @DisplayName("좋아요 테스트")
+//    @Test
+//    void testCreateLike() throws Exception {
+//        Post post = addPost();
+//
+////        mockMvc.perform(post("/like/"+post.getId()))
+////                .andExpect(status().isOk());
+//
+////        PostLike postlike = postLikeRepository.findAll().get(0);
+////
+////        assertNotNull(postlike);
+////        assertNotNull(postlike.getMember().getId());
+////        assertNotNull(postlike.getPost().getId());
+//    }
+//
+//
+//    @DisplayName("좋아요 중복 테스트")
+//    @Test
+//    void testDuplicateLike() throws Exception {
+//        Post post  = addPost();
+//
+////        mockMvc.perform(post("/like/"+post.getId()))
+////                .andExpect(status().isOk());
+//
+////        mockMvc.perform(post("/like/"+post.getId()))
+////                .andExpect(status().isBadRequest());
+//
+////        PostLike postlike = postLikeRepository.findAll().get(0);
+////
+////        assertNotNull(postlike);
+////        assertNotNull(postlike.getMember().getId());
+////        assertNotNull(postlike.getPost().getId());
+//    }
 
 
 }
