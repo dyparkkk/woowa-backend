@@ -38,6 +38,13 @@ public class CommentApiController {
         return commentService.commentCreate(userId, commentSaveDto, postId);
     }
 
+    // 댓글, 대댓글 수정
+    @PutMapping("/api/comment/{postId}/comment/modify")
+    public ResponseEntity commentModify(@SessionAttribute(value = LOGIN_MEMBER, required = true) String userId,
+                                      @RequestBody CommentSaveDto commentSaveDto){
+        return commentService.commentUpdate(userId, commentSaveDto);
+    }
+
     // 대댓글 작성
     @PostMapping("/api/comment/{postId}/comment/{parentId}")
     public ResponseEntity childCommentSave(@SessionAttribute(value = LOGIN_MEMBER, required = true) String userId,

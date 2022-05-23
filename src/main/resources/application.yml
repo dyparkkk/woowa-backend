@@ -1,7 +1,7 @@
 spring:
   datasource:
 #     url: jdbc:h2:~/test           # 정세훈
-#    url: jdbc:h2:tcp://localhost/~/test  # pdy
+#   url: jdbc:h2:tcp://localhost/~/test  # pdy
 # url: jdbc:h2:tcp://localhost/~/test  # 개발용(윤혜림)
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1 # 개발 서버용
     username: sa

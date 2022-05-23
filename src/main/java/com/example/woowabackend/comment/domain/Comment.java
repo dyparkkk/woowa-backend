@@ -65,6 +65,10 @@ public class Comment extends BaseTimeEntity {
         return false;
     }
 
+    public void update(String content){
+        this.content = content;
+    }
+
     @Builder
     public Comment(String content, Member member, Post post, Long parentId){
         this.content = content;

@@ -100,8 +100,6 @@ public class PostService {
             postTagRepository.delete(eachPostTag);
         }
 
-        post.delete();
-
         Pageable pageable = null;
         Page<Comment> comment = commentRepository.findByPostId(id, pageable);
         List<Comment> listComment = comment.getContent();
