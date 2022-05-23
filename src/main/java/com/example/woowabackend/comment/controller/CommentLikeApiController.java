@@ -25,7 +25,7 @@ public class CommentLikeApiController {
 
     // 좋아요 취소
     @DeleteMapping("/api/comment/{commentId}/deleteLike")
-    public SuccessResponseDto deleteLike(@PathVariable Long commentId){
+    public ResponseEntity deleteLike(@PathVariable Long commentId){
         return commentLikeService.deleteLike(commentId);
     }
 }

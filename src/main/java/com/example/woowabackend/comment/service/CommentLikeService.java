@@ -33,14 +33,14 @@ public class CommentLikeService {
             comment.increaseLikeCnt();
             return new ResponseEntity(HttpStatus.OK.value(), HttpStatus.OK);
         }
-        return new ResponseEntity(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("Duplicated Like", HttpStatus.BAD_REQUEST);
     }
     //사용자가 이미 좋아요 한 댓글인지 체크
     private boolean isNotAlreadyLike(Member member, Comment comment){
         return commentLikeRepository.findByMemberAndComment(member, comment).isEmpty();
     }
 
-    public SuccessResponseDto deleteLike(Long commentId) {
+    public ResponseEntity deleteLike(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("commentId Not Found"));
         CommentLike commentLike = commentLikeRepository.findByCommentId(commentId).orElseThrow(() -> new IllegalArgumentException("commentId Not Found for commentLike"));
         commentLikeRepository.delete(commentLike);
@@ -51,6 +51,6 @@ public class CommentLikeService {
             comment.getLikeCnt();
         }
 
-        return new SuccessResponseDto();
+        return new ResponseEntity(HttpStatus.OK.value(), HttpStatus.OK);
     }
 }
