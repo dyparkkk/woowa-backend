@@ -1,6 +1,6 @@
 ## 프로젝트기간
 
-22.01 - 진행중
+22.01 - 22.05
 
 <img src="https://user-images.githubusercontent.com/30069784/155072782-84d994fa-6c62-4a58-b1cc-5db1770807a7.png" width="700" height="500"/>
 
